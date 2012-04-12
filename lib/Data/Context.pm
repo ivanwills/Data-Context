@@ -7,6 +7,7 @@ package Data::Context;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use 5.010;
 use version;
 use Carp;
 use Scalar::Util;
@@ -47,66 +48,87 @@ This documentation refers to Data::Context version 0.1.
 
 =head1 DESCRIPTION
 
-A full description of the module and its features.
+    /path/to/file.dc.js:
+    {
+        "PARENT" : "/path/to/default.dc.js:,
+        "replace_me" : "#replaced.from.input.variables.0#"
+        "structure" : {
+            "MODULE": "My::Module",
+            "METHOD": "do_stuff",
+            ....
+        },
+        ...
+    }
 
-May include numerous subsections (i.e., =head2, =head3, etc.).
+Get object
+Build -> parse file
+    -> if "PARENT" build parent
+    -> mrege self and raw parent
+    -> contruct instance
+        -> itterate to all values
+            -> if the value is a string of the form "#...#" make sub refrence to add to call list
+            -> if the value is a HASHREF & "MODULE" or "METHOD" keys exist add to call list
+    -> cache result
 
+Use object
+    -> clone raw data
+    -> call each method call list
+        -> if return is a CODEREF assume it's an event handler
+        -> else replace data with returned value
+   -> if any event handlers are returned run event loop
+   -> return data
+
+MODULE HASHES
+{
+    "MODULE" : "My::Module",
+    "METHOD" : "get_data",
+    "NEW"    : "new",
+    ...
+}
+or
+{
+    "METHOD" : "do_something",
+    "ORDER"  : 1,
+    ....
+}
+
+1st : calls My::Module->new->get_data (if NEW wasn't present would just call My::Module->get_data)
+2nd : calls Data::Context::Actions->do_something
+
+the parameters passed in both cases are
+    $value = the hashref containing the method call
+    $dc    = The whole data context raw data
+    $path  = A path of how to get to this data
+    $vars  = The variables that the  get was called with
+
+Data::Context Configuration
+    PATH      string or list of strings containing directory names to be searched config files
+    fall_back bool if true if a config isn't found the parent config will be searched for etc
+    fall_back_depth
+              If set to a non zero value the fall back will limited to this number of times
+    actions   hashref of coderefs, allows simple adding of extra methods to Data::Context::Actions
+    action_class
+              Allows the using of an action class other than Data::Context::Actions. Although it is suggested that the alt class should inhreit from Data::Context::Actions
+    file_suffixes HASHREF
+             json => '.dc.json' : JSON
+             js   => '.dc.js'   : JSON->relaxed
+             yaml => '.dc.yml'  : YAML or YAML::XS
+             xml  => '.dc.xml'  : XML::Simple
+    log      logging object, creates own object that just writes to STDERR if not specified
+    debug    set the debugging level default is WARN (DEBUG, INFO, WARN, ERROR or FATAL)
+    cache ...
 
 =head1 SUBROUTINES/METHODS
 
-A separate section listing the public components of the module's interface.
-
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module
-provides.
-
-Name the section accordingly.
-
-In an object-oriented module, this section should begin with a sentence (of the
-form "An object of this class represents ...") to give the reader a high-level
-context to help them understand the methods that are subsequently described.
-
-
-
-
 =head1 DIAGNOSTICS
-
-A list of every error and warning message that the module can generate (even
-the ones that will "never happen"), with a full explanation of each problem,
-one or more likely causes, and any suggested remedies.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-A full explanation of any configuration system(s) used by the module, including
-the names and locations of any configuration files, and the meaning of any
-environment variables or properties that can be set. These descriptions must
-also include details of any configuration language used.
-
 =head1 DEPENDENCIES
-
-A list of all of the other modules that this module relies upon, including any
-restrictions on versions, and an indication of whether these required modules
-are part of the standard Perl distribution, part of the module's distribution,
-or must be installed separately.
 
 =head1 INCOMPATIBILITIES
 
-A list of any modules that this module cannot be used in conjunction with.
-This may be due to name conflicts in the interface, or competition for system
-or program resources, or due to internal limitations of Perl (for example, many
-modules that use source code filters are mutually incompatible).
-
 =head1 BUGS AND LIMITATIONS
-
-A list of known problems with the module, together with some indication of
-whether they are likely to be fixed in an upcoming release.
-
-Also, a list of restrictions on the features the module does provide: data types
-that cannot be handled, performance issues and the circumstances in which they
-may arise, practical limitations on the size of data sets, special cases that
-are not (yet) handled, etc.
-
-The initial template usually just has:
 
 There are no known bugs in this module.
 
@@ -117,7 +139,6 @@ Patches are welcome.
 =head1 AUTHOR
 
 Ivan Wills - (ivan.wills@gmail.com)
-<Author name(s)>  (<contact address>)
 
 =head1 LICENSE AND COPYRIGHT
 
