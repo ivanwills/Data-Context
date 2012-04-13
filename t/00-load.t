@@ -2,11 +2,22 @@
 
 use strict;
 use warnings;
-use Test::More tests => 1 + 1;
-use Test::NoWarnings;
+use Test::More;
+use Path::Class;
 
-BEGIN {
-	use_ok( 'Data::Context' );
+my $lib = file($0)->parent->parent->subdir('lib');
+my @files = $lib->children;
+
+while ( my $file = shift @files ) {
+    if ( -d $file ) {
+        push @files, $file->children;
+    }
+    elsif ( $file =~ /[.]pm$/ ) {
+        diag $file;
+        require_ok $file;
+    }
 }
 
 diag( "Testing Data::Context $Data::Context::VERSION, Perl $], $^X" );
+
+done_testing;
