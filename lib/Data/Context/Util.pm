@@ -26,6 +26,7 @@ sub lol_path {
     my ($lol, $path) = @_;
     my @path = split /[.]/, $path;
     my $point = $lol;
+    my $replacer;
 
     POINT:
     while ( $point && @path ) {
@@ -36,25 +37,30 @@ sub lol_path {
             next POINT;
         }
 
+        my $item = shift @path;
+        my $current = $point;
+
         # process the point
         if ( !ref $point ) {
             return;
         }
         elsif ( ref $point eq 'HASH' ) {
-            $point = $point->{shift @path};
+            $replacer = sub { $current->{$item} = shift };
+            $point = $point->{$item};
         }
         elsif ( ref $point eq 'ARRAY' ) {
-            $point = $point->[shift @path];
+            $replacer = sub {  $current->[$item] = shift };
+            $point = $point->[$item];
         }
         elsif ( blessed $point && $point->can( $path[0] ) ) {
-            my $method = shift @path;
-            $point = $point->$method();
+            $replacer = undef;
+            $point = $point->$item();
         }
         else {
             confess "Don't know how to deal with $point";
         }
 
-        return $point if !@path;
+        return wantarray ? ($point, $replacer) : $point if !@path;
     }
 
     # nothing found
