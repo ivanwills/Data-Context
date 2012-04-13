@@ -15,3 +15,12 @@ t/pod-coverage.t
 t/pod.t
 t/perlcriticrc
 t/spelling.t
+lib/Data/Context/Actions.pm
+lib/Data/Context/Instance.pm
+lib/Data/Context/Util.pm
+t/actions.t
+t/data-context.t
+t/dc/data.dc.js
+t/instance.t
+t/util.t
+
