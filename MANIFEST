@@ -4,6 +4,7 @@ LICENSE
 MANIFEST
 MANIFEST.SKIP
 META.yml
+META.json
 Makefile.PL
 README
 lib/Data/Context.pm
