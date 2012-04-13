@@ -12,17 +12,83 @@ use version;
 use Carp;
 use Scalar::Util;
 use List::Util;
-#use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-
+use Moose::Util::TypeConstraints;
 
 our $VERSION     = version->new('0.0.1');
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
-#our @EXPORT      = qw//;
 
+subtype 'ArrayRefStr'
+    => as 'ArrayRef[Str]';
 
+coerce 'ArrayRefStr'
+    => from 'Str'
+    => via { [$_] };
+
+has path => (
+    is       => 'rw',
+    isa      => 'ArrayRefStr',
+    coerce   => 1,
+    required => 1,
+);
+has fall_back => (
+    is      => 'rw',
+    isa     => 'Bool',
+    default => 0,
+);
+has fall_back_depth => (
+    is      => 'rw',
+    isa     => 'Int',
+    default => 0,
+);
+has actions => (
+    is   => 'rw',
+    isa  => 'HashRef[CodeRef]',
+);
+has action_class => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => 'Data::Context::Actions',
+);
+has action_method => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => 'get_data',
+);
+has file_suffixes => (
+    is      => 'rw',
+    isa     => 'HashRef[Str]',
+    default => sub {
+        return {
+             json => '.dc.json',
+             js   => '.dc.js',
+             yaml => '.dc.yml',
+             xml  => '.dc.xml',
+        };
+    },
+);
+has log => (
+    is      => 'rw',
+    isa     => 'BlessedRef',
+#    default => '',
+);
+has debug => (
+    is      => 'rw',
+    isa     => 'Int',
+    default => '3',
+);
+has cache => (
+    is      => 'rw',
+    isa     => '',
+    #default => '',
+);
+
+sub get {
+    my ( $self, $path, $vars ) = @_;
+
+}
 
 1;
 
@@ -30,12 +96,11 @@ __END__
 
 =head1 NAME
 
-Data::Context - <One-line description of module's purpose>
+Data::Context - Configuration data with context
 
 =head1 VERSION
 
 This documentation refers to Data::Context version 0.1.
-
 
 =head1 SYNOPSIS
 
@@ -102,7 +167,7 @@ the parameters passed in both cases are
     $vars  = The variables that the  get was called with
 
 Data::Context Configuration
-    PATH      string or list of strings containing directory names to be searched config files
+    path      string or list of strings containing directory names to be searched config files
     fall_back bool if true if a config isn't found the parent config will be searched for etc
     fall_back_depth
               If set to a non zero value the fall back will limited to this number of times
