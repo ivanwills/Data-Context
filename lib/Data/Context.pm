@@ -135,7 +135,6 @@ sub get_instance {
                     @path[0 .. @path-2],
                     $path[-1] . $self->file_suffixes->{$type}
                 );
-                warn $config;
                 if ( -e $config ) {
                     $file = $config;
                     $file_type = $type;

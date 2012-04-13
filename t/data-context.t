@@ -29,7 +29,7 @@ sub test_getting {
     my $data = $dc->get( 'data', { test => { value => [qw/a b/] } } );
 
     ok $data, "get some data";
-    diag Dumper $data;
+    #diag Dumper $data;
 
     $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
     ok $data, "get some data";
