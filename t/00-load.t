@@ -13,8 +13,11 @@ while ( my $file = shift @files ) {
         push @files, $file->children;
     }
     elsif ( $file =~ /[.]pm$/ ) {
-        diag $file;
-        require_ok $file;
+        my $module = $file;
+        $module =~ s{lib/}{};
+        $module =~ s{/}{::}g;
+        $module =~ s{[.]pm}{};
+        use_ok $module;
     }
 }
 
