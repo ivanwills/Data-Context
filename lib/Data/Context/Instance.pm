@@ -15,7 +15,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Hash::Merge;
 use Clone qw/clone/;
-use Data::Context::Util qw/lol_path lol_itterate/;
+use Data::Context::Util qw/lol_path lol_iterate/;
 
 our $VERSION     = version->new('0.0.1');
 our @EXPORT_OK   = qw//;
@@ -102,7 +102,7 @@ sub init {
 
     # get data actions
     my $count = 0;
-    lol_itterate( $raw, sub { $self->process_data(\$count, @_) } );
+    lol_iterate( $raw, sub { $self->process_data(\$count, @_) } );
 
     return $self;
 }
@@ -129,7 +129,7 @@ sub get_data {
 sub sort_optional {
     my ($hash) = @_;
 
-    return sort {
+    my @sorted = sort {
         return $hash->{$a}->{found} <=> $hash->{$b}->{found} if ! defined $hash->{$a}->{order} && ! defined $hash->{$b}->{order};
         return $hash->{$b}->{order} >= 0 ? 1 : -1            if !defined $hash->{$a}->{order};
         return $hash->{$a}->{order} >= 0 ? -1 : 1            if !defined $hash->{$b}->{order};
@@ -137,6 +137,8 @@ sub sort_optional {
         return  1                                            if $hash->{$a}->{order} < 0 && $hash->{$b}->{order} >= 0;
         return $hash->{$a}->{order} <=> $hash->{$b}->{order};
     } keys %$hash;
+
+    return @ssorted;
 }
 
 sub process_data {

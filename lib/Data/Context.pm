@@ -128,10 +128,10 @@ This documentation refers to Data::Context version 0.1.
 Get object
 Build -> parse file
     -> if "PARENT" build parent
-    -> mrege self and raw parent
-    -> contruct instance
-        -> itterate to all values
-            -> if the value is a string of the form "#...#" make sub refrence to add to call list
+    -> merge self and raw parent
+    -> construct instance
+        -> iterate to all values
+            -> if the value is a string of the form "#...#" make sub reference to add to call list
             -> if the value is a HASHREF & "MODULE" or "METHOD" keys exist add to call list
     -> cache result
 
@@ -173,7 +173,7 @@ Data::Context Configuration
               If set to a non zero value the fall back will limited to this number of times
     actions   hashref of coderefs, allows simple adding of extra methods to Data::Context::Actions
     action_class
-              Allows the using of an action class other than Data::Context::Actions. Although it is suggested that the alt class should inhreit from Data::Context::Actions
+              Allows the using of an action class other than Data::Context::Actions. Although it is suggested that the alt class should inherit from Data::Context::Actions
     file_suffixes HASHREF
              json => '.dc.json' : JSON
              js   => '.dc.js'   : JSON->relaxed

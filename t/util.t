@@ -3,11 +3,11 @@ use warnings;
 use Test::More tests => 6;
 use Data::Dumper qw/Dumper/;
 
-use Data::Context::Util qw/lol_path lol_itterate/;
+use Data::Context::Util qw/lol_path lol_iterate/;
 
 my ($data, $tests) = get_data();
 test_lol_path();
-test_lol_itterate();
+test_lol_iterate();
 
 done_testing;
 
@@ -18,9 +18,9 @@ sub test_lol_path {
     }
 }
 
-sub test_lol_itterate {
+sub test_lol_iterate {
     my %result;
-    lol_itterate(
+    lol_iterate(
         $data,
         sub {
             my ( $data, $path ) = @_;
@@ -29,7 +29,7 @@ sub test_lol_itterate {
     );
 
     for my $path ( keys %$tests ) {
-        is $result{$path}, $tests->{$path}, "lol_itterate saw '$path' had a value of '$tests->{$path}'";
+        is $result{$path}, $tests->{$path}, "lol_iterate saw '$path' had a value of '$tests->{$path}'";
     }
 }
 

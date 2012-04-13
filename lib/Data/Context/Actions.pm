@@ -13,7 +13,7 @@ use Scalar::Util;
 use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use Data::Context::Util qw/lol_path lol_itterate/;
+use Data::Context::Util qw/lol_path lol_iterate/;
 
 our $VERSION     = version->new('0.0.1');
 our @EXPORT_OK   = qw//;
