@@ -15,6 +15,9 @@ use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Moose::Util::TypeConstraints;
+use Path::Class;
+
+use Data::Context::Instance;
 
 our $VERSION     = version->new('0.0.1');
 our @EXPORT_OK   = qw//;
@@ -69,6 +72,17 @@ has file_suffixes => (
         };
     },
 );
+has file_suffix_order => (
+    is      => 'rw',
+    isa     => 'ArrayRefStr',
+    coerce  => 1,
+    default => sub { [qw/js json yaml xml/] },
+);
+has file_default => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => '_default',
+);
 has log => (
     is      => 'rw',
     isa     => 'BlessedRef',
@@ -79,15 +93,87 @@ has debug => (
     isa     => 'Int',
     default => '3',
 );
-has cache => (
+has instance_cache => (
     is      => 'rw',
-    isa     => '',
-    #default => '',
+    isa     => 'HashRef[Data::Context::Instance]',
+    default => sub {{}},
+    init_arg => undef,
 );
 
 sub get {
     my ( $self, $path, $vars ) = @_;
 
+    # we allow paths to be passed with leading slash but we remove before using
+    $path =~ s{^/}{};
+
+    my $dci = $self->get_instance($path);
+
+    return $dci->get_data($vars);
+}
+
+sub get_instance {
+    my ( $self, $path ) = @_;
+
+    # TODO add some cache controlls here or in ::Instance::init();
+    return $self->instance_cache->{$path} if $self->instance_cache->{$path};
+
+    my @path  = split m{/+}, $path;
+    my $count = 1;
+    my $file;
+    my $file_type;
+
+    # find the most appropriate file
+    PATH:
+    while ( @path ) {
+        my $default;
+        my $default_type;
+
+        for my $search ( @{ $self->path } ) {
+            for my $type ( @{ $self->file_suffix_order } ) {
+                my $config = file(
+                    $search,
+                    @path[0 .. @path-2],
+                    $path[-1] . $self->file_suffixes->{$type}
+                );
+                warn $config;
+                if ( -e $config ) {
+                    $file = $config;
+                    $file_type = $type;
+                    last PATH;
+                }
+                next if $default;
+
+                $config = file(
+                    $search,
+                    @path[0 .. @path - 2],
+                    $self->file_default . $self->file_suffixes->{$type}
+                );
+                if ( -e $config ) {
+                    $default = $config;
+                    $default_type = $type;
+                }
+            }
+        }
+
+        if ($default) {
+            $file = $default;
+            $file_type = $default_type;
+            last PATH;
+        }
+
+        last if !$self->fall_back || ( $self->fall_back_depth && $count++ >= $self->fall_back_depth );
+
+        pop @path;
+    }
+
+    confess "Could not find a data context config file for '$path'\n" if ! $file;
+
+    return $self->instance_cache->{$path} = Data::Context::Instance->new(
+        path => $path,
+        file => $file,
+        type => $file_type,
+        dc   => $self,
+    );
 }
 
 1;

@@ -22,4 +22,15 @@ sub test_creation {
 }
 
 sub test_getting {
+    my $dc = Data::Context->new(
+        path      => "$path",
+        fall_back => 1,
+    );
+    my $data = $dc->get( 'data', { test => { value => [qw/a b/] } } );
+
+    ok $data, "get some data";
+    diag Dumper $data;
+
+    $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
+    ok $data, "get some data";
 }

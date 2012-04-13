@@ -138,7 +138,7 @@ sub sort_optional {
         return $hash->{$a}->{order} <=> $hash->{$b}->{order};
     } keys %$hash;
 
-    return @ssorted;
+    return @sorted;
 }
 
 sub process_data {
