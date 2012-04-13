@@ -20,7 +20,6 @@ use Data::Context::Util qw/lol_path lol_iterate/;
 our $VERSION     = version->new('0.0.1');
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
-#our @EXPORT      = qw//;
 
 has path => (
     is       => 'rw',
@@ -93,8 +92,8 @@ sub init {
 
     # merge in any inherited data
     if ( $raw->{PARENT} ) {
-        my $parent = $self->dc->get_instance( $raw->{PARENT} );
-        $raw = Hash::Merge->new('LEFT_PRECEDENT')->merge( $raw, $parent );
+        my $parent = $self->dc->get_instance( $raw->{PARENT} )->init;
+        $raw = Hash::Merge->new('LEFT_PRECEDENT')->merge( $raw, $parent->raw );
     }
 
     # save complete raw data
@@ -114,7 +113,7 @@ sub get_data {
     my $data = clone $self->raw;
 
     # process the data in order
-    for my $path ( sort_optional( $self->actions ) ) {
+    for my $path ( _sort_optional( $self->actions ) ) {
         my ($value, $replacer) = lol_path( $data, $path );
         my $module = $self->actions->{$path}{module};
         my $method = $self->actions->{$path}{method};
@@ -124,21 +123,6 @@ sub get_data {
     }
 
     return $data;
-}
-
-sub sort_optional {
-    my ($hash) = @_;
-
-    my @sorted = sort {
-        return $hash->{$a}->{found} <=> $hash->{$b}->{found} if ! defined $hash->{$a}->{order} && ! defined $hash->{$b}->{order};
-        return $hash->{$b}->{order} >= 0 ? 1 : -1            if !defined $hash->{$a}->{order};
-        return $hash->{$a}->{order} >= 0 ? -1 : 1            if !defined $hash->{$b}->{order};
-        return -1                                            if $hash->{$a}->{order} >= 0 && $hash->{$b}->{order} < 0;
-        return  1                                            if $hash->{$a}->{order} < 0 && $hash->{$b}->{order} >= 0;
-        return $hash->{$a}->{order} <=> $hash->{$b}->{order};
-    } keys %$hash;
-
-    return @sorted;
 }
 
 sub process_data {
@@ -169,6 +153,21 @@ sub process_data {
     return;
 }
 
+sub _sort_optional {
+    my ($hash) = @_;
+
+    my @sorted = sort {
+        return $hash->{$a}->{found} <=> $hash->{$b}->{found} if ! defined $hash->{$a}->{order} && ! defined $hash->{$b}->{order};
+        return $hash->{$b}->{order} >= 0 ? 1 : -1            if !defined $hash->{$a}->{order};
+        return $hash->{$a}->{order} >= 0 ? -1 : 1            if !defined $hash->{$b}->{order};
+        return -1                                            if $hash->{$a}->{order} >= 0 && $hash->{$b}->{order} < 0;
+        return  1                                            if $hash->{$a}->{order} < 0 && $hash->{$b}->{order} >= 0;
+        return $hash->{$a}->{order} <=> $hash->{$b}->{order};
+    } keys %$hash;
+
+    return @sorted;
+}
+
 our %required;
 sub _do_require {
     my ($module) = @_;
@@ -188,84 +187,56 @@ __END__
 
 =head1 NAME
 
-Data::Context::Instance - <One-line description of module's purpose>
+Data::Context::Instance - The in memory instance of a data context config file
 
 =head1 VERSION
 
 This documentation refers to Data::Context::Instance version 0.1.
 
-
 =head1 SYNOPSIS
 
    use Data::Context::Instance;
 
-   # Brief but working code example(s) here showing the most common usage(s)
-   # This section will be as far as many users bother reading, so make it as
-   # educational and exemplary as possible.
+   # create a new object
+   my $dci = Data::Context::Instance->new(
+        path => 'dir/file',
+        file => Path::Class::file('path/to/dir/file.dc.js'),
+        type => 'js',
+        dc   => $dc,
+   );
 
+   # Initialise the object (done by get normally)
+   $dci->init;
+
+   # get the data (with the context of $vars)
+   my $data = $dci->get_data($vars);
 
 =head1 DESCRIPTION
 
-A full description of the module and its features.
-
-May include numerous subsections (i.e., =head2, =head3, etc.).
-
-
 =head1 SUBROUTINES/METHODS
 
-A separate section listing the public components of the module's interface.
+=head2 C<init()>
 
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module
-provides.
+Initialises the instance ie it reads the config file and merges in the parent if found
 
-Name the section accordingly.
+=head2 C<get_data ( $vars )>
 
-In an object-oriented module, this section should begin with a sentence (of the
-form "An object of this class represents ...") to give the reader a high-level
-context to help them understand the methods that are subsequently described.
+Returns the data from the config file processed with the context of $vars
 
+=head2 C<process_data( $count, $data, $path )>
 
-
+This does the magic of processing the data, and in the future handling of the
+data event loop.
 
 =head1 DIAGNOSTICS
 
-A list of every error and warning message that the module can generate (even
-the ones that will "never happen"), with a full explanation of each problem,
-one or more likely causes, and any suggested remedies.
-
 =head1 CONFIGURATION AND ENVIRONMENT
-
-A full explanation of any configuration system(s) used by the module, including
-the names and locations of any configuration files, and the meaning of any
-environment variables or properties that can be set. These descriptions must
-also include details of any configuration language used.
 
 =head1 DEPENDENCIES
 
-A list of all of the other modules that this module relies upon, including any
-restrictions on versions, and an indication of whether these required modules
-are part of the standard Perl distribution, part of the module's distribution,
-or must be installed separately.
-
 =head1 INCOMPATIBILITIES
 
-A list of any modules that this module cannot be used in conjunction with.
-This may be due to name conflicts in the interface, or competition for system
-or program resources, or due to internal limitations of Perl (for example, many
-modules that use source code filters are mutually incompatible).
-
 =head1 BUGS AND LIMITATIONS
-
-A list of known problems with the module, together with some indication of
-whether they are likely to be fixed in an upcoming release.
-
-Also, a list of restrictions on the features the module does provide: data types
-that cannot be handled, performance issues and the circumstances in which they
-may arise, practical limitations on the size of data sets, special cases that
-are not (yet) handled, etc.
-
-The initial template usually just has:
 
 There are no known bugs in this module.
 
@@ -276,7 +247,6 @@ Patches are welcome.
 =head1 AUTHOR
 
 Ivan Wills - (ivan.wills@gmail.com)
-<Author name(s)>  (<contact address>)
 
 =head1 LICENSE AND COPYRIGHT
 

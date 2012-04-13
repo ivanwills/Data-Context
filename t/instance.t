@@ -27,6 +27,17 @@ sub test_object {
     #diag Dumper $dci->raw;
     #diag Dumper $dci->actions;
     #diag Dumper $dci->get_data({test=>{value=>['replace']}});
+
+    $dci = Data::Context::Instance->new(
+        path => 'deep/child',
+        file => file($0)->parent->file('dc/deep/child.dc.yml'),
+        type => 'yaml',
+        dc   => $dc,
+    )->init;
+
+    ok $dci, 'get an object back';
+    is $dci->raw->{basic}, 'text', 'Get data from parent config';
+    #diag Dumper $dci->raw;
 }
 
 sub test_sort {
@@ -38,7 +49,7 @@ sub test_sort {
             one   => { found => 4, order => 1 },
         } => [ qw/ one two three four / ],
     );
-    my $sorted = [ Data::Context::Instance::sort_optional( $tests[0] ) ];
+    my $sorted = [ Data::Context::Instance::_sort_optional( $tests[0] ) ];
 
     is_deeply $sorted, $tests[1], "Sorted correctly"
         or diag Dumper $sorted, $tests[1];
