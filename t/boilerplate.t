@@ -2,13 +2,14 @@
 
 use strict;
 use warnings;
+use Carp qw/carp croak cluck confess longmess/;
 use Test::More tests => 3 + 1;
 use Test::NoWarnings;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
     open( my $fh, '<', $filename )
-        or die "couldn't open $filename for reading: $!";
+        or confess "couldn't open $filename for reading: $!";
 
     my %violated;
 
@@ -52,5 +53,5 @@ TODO: {
 
 }
 
-module_boilerplate_ok('lib/Data-Context/t/boilerplate.t.pm');
+module_boilerplate_ok('lib/Data/Context.pm');
 
