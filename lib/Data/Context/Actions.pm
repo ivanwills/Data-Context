@@ -23,8 +23,8 @@ sub expand_vars {
     my ( $self, $value, $vars, $path, $dci ) = @_;
 
     if ( ref $value eq 'HASH' ) {
-        if ( $value->{value} ) {
-            $dci->dc->log->warn( "expand_vars called as a hash but without a value in ".$dci->path." at $path" );
+        if ( !exists $value->{value} ) {
+            $dci->dc->log->warn( "expand_vars called as a hash but without a value in ".$dci->path." at $path" ) if $dci;
             return;
         }
         $value = $value->{value} ;
