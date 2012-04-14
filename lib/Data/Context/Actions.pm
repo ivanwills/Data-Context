@@ -22,7 +22,13 @@ our %EXPORT_TAGS = ();
 sub expand_vars {
     my ( $self, $value, $vars, $path, $dci ) = @_;
 
-    $value = $value->{value} if ref $value eq 'HASH' && $value->{value};
+    if ( ref $value eq 'HASH' ) {
+        if ( $value->{value} ) {
+            $dci->dc->log->warn( "expand_vars called as a hash but without a value in ".$dci->path." at $path" );
+            return;
+        }
+        $value = $value->{value} ;
+    }
 
     # remove #'s
     $value =~ s/^#|#$//g;
