@@ -20,7 +20,7 @@ our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
 
 sub expand_vars {
-    my ( $self, $value, $dc, $path, $vars ) = @_;
+    my ( $self, $value, $vars, $path, $dci ) = @_;
 
     $value = $value->{value} if ref $value eq 'HASH' && $value->{value};
 
