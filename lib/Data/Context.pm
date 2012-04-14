@@ -191,10 +191,18 @@ This documentation refers to Data::Context version 0.1.
 
    use Data::Context;
 
-   # Brief but working code example(s) here showing the most common usage(s)
-   # This section will be as far as many users bother reading, so make it as
-   # educational and exemplary as possible.
+   # create a new Data::Context variable
+   my $dc = Data::Context->new(
+        path => [qw{ /path/to/configs /alt/path }],
+   );
 
+   # read a config
+   my $data = $dc->get(
+        'some/config',
+        {
+            context => 'values',
+        }
+   );
 
 =head1 DESCRIPTION
 
@@ -269,6 +277,15 @@ Data::Context Configuration
     cache ...
 
 =head1 SUBROUTINES/METHODS
+
+=head2 C<get ($path, $vars)>
+
+Reads the config represented by C<$path> and apply the context variable
+C<$vars> as dictated by the found config.
+
+=head2 C<get_instance ($path)>
+
+Creates (or retreives from cache) an instance of the config C<$paht>.
 
 =head1 DIAGNOSTICS
 
