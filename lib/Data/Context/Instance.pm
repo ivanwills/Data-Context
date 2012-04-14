@@ -16,6 +16,7 @@ use English qw/ -no_match_vars /;
 use Hash::Merge;
 use Clone qw/clone/;
 use Data::Context::Util qw/lol_path lol_iterate/;
+use Class::Inspector;
 
 our $VERSION     = version->new('0.0.1');
 our @EXPORT_OK   = qw//;
@@ -111,6 +112,7 @@ sub get_data {
     $self->init;
 
     my $data = clone $self->raw;
+    my @events;
 
     # process the data in order
     for my $path ( _sort_optional( $self->actions ) ) {
@@ -119,7 +121,16 @@ sub get_data {
         my $method = $self->actions->{$path}{method};
         my $new = $module->$method( $value, $self->dc, $path, $vars );
 
-        $replacer->($new);
+        if ( blessed($new) && $new->isa('AnyEvent::CondVar') ) {
+            push @events, [ $replacer, $new ];
+        }
+        else {
+            $replacer->($new);
+        }
+    }
+
+    for my $event ( @events ) {
+        $event->[0]->($event->[1]->recv);
     }
 
     return $data;
@@ -174,6 +185,10 @@ sub _do_require {
 
     return if $required{$module}++;
 
+    # check if namespace appears to be loaded
+    return if Class::Inspector->loaded($module);
+
+    # Try loading namespace
     $module =~ s{::}{/}g;
     $module .= '.pm';
     eval { require $module };

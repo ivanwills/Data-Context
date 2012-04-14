@@ -3,6 +3,8 @@ use warnings;
 use Test::More;# tests => 2;
 use Path::Class;
 use Data::Dumper qw/Dumper/;
+use AnyEvent;
+use AnyEvent::HTTP;
 
 use Data::Context;
 
@@ -33,4 +35,14 @@ sub test_getting {
 
     $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
     ok $data, "get some data";
+}
+
+sub get_data {
+    my ($self, $data ) = @_;
+
+    my $cv = AnyEvent->condvar;
+
+    http_get $data->{url}, sub { $cv->send( length $_[0] ); };
+
+    return $cv;
 }

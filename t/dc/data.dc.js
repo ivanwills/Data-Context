@@ -9,6 +9,14 @@
             "value"  : "test.value.0",
         },
         "straight_var" : "#test.value.1#",
+        "longrunning" : {
+            "MODULE" : "main",
+            "url" : "http://slashdot.org/",
+        },
+        "shortrunning" : {
+            "MODULE" : "main",
+            "url" : "http://www.google.com/",
+        },
     },
     "list" : [
         "one",
