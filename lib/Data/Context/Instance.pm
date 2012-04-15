@@ -76,7 +76,8 @@ sub init {
     my ($self) = @_;
     my $raw;
 
-    return $self if $self->raw;
+    # check if we already have the raw data and if so that it is current
+    return $self if $self->raw && -s $self->file == $self->stats->{size};
 
     # get the raw data
     if ( $self->type eq 'json' ) {
