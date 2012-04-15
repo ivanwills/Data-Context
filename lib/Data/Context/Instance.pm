@@ -60,7 +60,12 @@ has actions => (
 sub _stats {
     my ($self) = @_;
     my $stat = $self->file->stat;
-    warn $self->file if !-f $self->file;
+    if ( !-f $self->file ) {
+        my $msg = 'Cannot find the file "' . $self->file . '"';
+        $self->log->error($msg);
+        confess $msg;
+    }
+
     return {
         size     => $stat->size,
         modified => $stat->mtime,
@@ -76,11 +81,11 @@ sub init {
     # get the raw data
     if ( $self->type eq 'json' ) {
         _do_require('JSON');
-        $raw = JSON->new->utf8->decode( scalar $self->file->slurp );
+        $raw = JSON->new->utf8->shrink->decode( scalar $self->file->slurp );
     }
     elsif ( $self->type eq 'js' ) {
         _do_require('JSON');
-        $raw = JSON->new->utf8->relaxed->decode( scalar $self->file->slurp );
+        $raw = JSON->new->utf8->relaxed->shrink->decode( scalar $self->file->slurp );
     }
     elsif ( $self->type eq 'yaml' ) {
         _do_require('YAML::XS');
@@ -93,6 +98,7 @@ sub init {
 
     # merge in any inherited data
     if ( $raw->{PARENT} ) {
+        $self->raw({});
         my $parent = $self->dc->get_instance( $raw->{PARENT} )->init;
         $raw = Hash::Merge->new('LEFT_PRECEDENT')->merge( $raw, $parent->raw );
     }
