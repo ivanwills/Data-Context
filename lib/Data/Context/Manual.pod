@@ -1,15 +1,20 @@
 =head1 NAME
 
-Data::Context::ConfigFiles
+Data::Context::Manual
 
 =head1 SYNOPSIS
 
+    # The config files (all produce the same data structures)
     # JSON relaxed : data.dc.js
     {
         # shell/perl style comments ok
         "PARENT": "other/path",
         "hash" : {
             "key" : "value", # allows trailing commas
+            "action" : {
+                "MODULE" : "My::Module",
+                "METHOD" : "my_action",
+            },
         },
     }
 
@@ -18,21 +23,43 @@ Data::Context::ConfigFiles
         "PARENT": "other/path",
         "hash" : {
             "key" : "value"
+            "action" : {
+                "MODULE" : "My::Module",
+                "METHOD" : "my_action"
+            }
         }
     }
 
     # YAML : data.dc.yml
     PARENT: other/path
-    hash
+    hash:
         key : value
+        action:
+            MODULE: My::Module
+            METHOD: my_action
 
     # XML : data.dc.xml
     <config>
         <PARENT>other/path</PARENT>
         <hash>
             <key>value</key>
+            <action>
+                <MODULE>My:Module</MODULE>
+                <METHOD>my_action</METHOD>
+            </action>
         </hash>
     </config>
+
+    # in perl
+    use Data::Context;
+    my $dc = Data::Context->new(
+        path => [qw{ /path/one /paht/two }],
+        fallback => 1,
+        actions  => {
+            do_something => sub { ... },
+        },
+    );
+    my $data = $dc->get('data', { some => 'vars' });
 
 =head1 DESCRIPTION
 
