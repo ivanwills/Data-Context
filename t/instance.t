@@ -39,7 +39,7 @@ sub test_object {
     is $dci->raw->{basic}, 'text', 'Get data from parent config';
     #diag Dumper $dci->raw;
 
-    my $dci = Data::Context::Instance->new(
+    $dci = Data::Context::Instance->new(
         path => 'data',
         file => file($0)->parent->file('dc/_default.dc.xml'),
         type => 'xml',
@@ -47,7 +47,7 @@ sub test_object {
     )->init;
 
     ok $dci, 'get data for xml';
-    diag Dumper $dci->raw;
+    #diag Dumper $dci->raw;
     #diag Dumper $dci->actions;
     #diag Dumper $dci->get_data({test=>{value=>['replace']}});
 }
