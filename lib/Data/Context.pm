@@ -324,7 +324,7 @@ config specified.
 
  eg config path = my/config/file
 
-if fallback is false the defalut search performed (for each directory in $dc->path) is
+if fallback is false the default search performed (for each directory in $dc->path) is
 
  my/config/file.dc.js
  my/config/file.dc.json
@@ -385,7 +385,7 @@ a different method name.
 =item file_suffixes
 
 This allows the setting of what file suffixes will be used for loading the
-various config tyoes. Default:
+various config types. Default:
 
  {
    js   => '.dc.js',
@@ -416,7 +416,7 @@ When using the default logger for C<log>. This sets the level of logging.
 1 = most information, 5 = almost none, default is 3 warnings and higher
 messages
 
-=end
+=back
 
 =head2 C<get ($path, $vars)>
 
@@ -425,7 +425,7 @@ C<$vars> as dictated by the found config.
 
 =head2 C<get_instance ($path)>
 
-Creates (or retreives from cache) an instance of the config C<$paht>.
+Creates (or retrieves from cache) an instance of the config C<$paht>.
 
 =head1 DIAGNOSTICS
 

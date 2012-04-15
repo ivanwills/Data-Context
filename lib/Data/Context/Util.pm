@@ -140,7 +140,7 @@ This documentation refers to Data::Context::Util version 0.1.
 
 =item C<$lol>
 
-List of lists ie an arbitary data structure
+List of lists ie an arbitrary data structure
 
 =item C<$path>
 
@@ -148,8 +148,8 @@ A string encoded as a dotted path through the data structure
 
 =back
 
-C<lol_path> trys to extract data from an arbitary Perl data structure baised
-on the specified path. It will try yo do what maakes sence ie if the current
+C<lol_path> tries to extract data from an arbitrary Perl data structure based
+on the specified path. It will try yo do what makes sense ie if the current
 context of the lol is a hash the path part will be used as a key, similarly
 if the context is an array the path part will be used as an index. If the
 context is a blessed reference then it try to call the path part as a method.
@@ -162,7 +162,7 @@ All errors result in returning no value.
 
 =item C<$lol>
 
-Arbitary perl datastructure
+Arbitrary perl data structure
 
 =item C<$code>
 
@@ -173,7 +173,7 @@ It is called as:
 
 =back
 
-Recursivly iterates through a data structure calling C<$code> for each value
+Recursively iterates through a data structure calling C<$code> for each value
 encountered.
 
 =head1 DIAGNOSTICS

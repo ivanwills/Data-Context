@@ -15,11 +15,11 @@ eval { require Test::Spelling; Test::Spelling->import() };
 # now check that the spell command is installed
 my $found;
 for my $dir ( split /:/, $ENV{PATH} ) {
-	next if !-d $dir;
-	next if !-x "$dir/spell";
+    next if !-d $dir;
+    next if !-x "$dir/spell";
 
-	$found = 1;
-	last;
+    $found = 1;
+    last;
 }
 
 plan skip_all => "Test::Spelling required for testing POD spelling" if $@;
@@ -32,11 +32,16 @@ add_stopwords(qw/
     STDERR
     YAML
     alt
+    eg
+    ie
     dc
     js
     json
     yml
     yaml
     xml
+    Initialises
+    fallback
+    lol
 /);
 all_pod_files_spelling_ok();
