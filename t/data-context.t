@@ -31,6 +31,11 @@ sub test_getting {
     my $data = $dc->get( 'data', { test => { value => [qw/a b/] } } );
 
     ok $data, "get some data";
+    is $data->{hash}{straight_var}, 'b', "Variable set to 'b'";
+
+    $data = $dc->get( 'data', { test => { value => [qw/a new_val/] } } );
+
+    is $data->{hash}{straight_var}, 'new_val', "Variable set to 'new_val'";
     #diag Dumper $data;
 
     $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
