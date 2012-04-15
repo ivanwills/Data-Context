@@ -38,6 +38,18 @@ sub test_object {
     ok $dci, 'get an object back';
     is $dci->raw->{basic}, 'text', 'Get data from parent config';
     #diag Dumper $dci->raw;
+
+    my $dci = Data::Context::Instance->new(
+        path => 'data',
+        file => file($0)->parent->file('dc/_default.dc.xml'),
+        type => 'xml',
+        dc   => $dc,
+    )->init;
+
+    ok $dci, 'get data for xml';
+    diag Dumper $dci->raw;
+    #diag Dumper $dci->actions;
+    #diag Dumper $dci->get_data({test=>{value=>['replace']}});
 }
 
 sub test_sort {
