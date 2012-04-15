@@ -84,14 +84,17 @@ has file_default => (
     default => '_default',
 );
 has log => (
-    is      => 'rw',
-    isa     => 'BlessedRef',
-#    default => '',
+    is         => 'rw',
+    isa        => 'Object',
+    builder    => '_log',
+    lazy_build => 1,
 );
 has debug => (
     is      => 'rw',
     isa     => 'Int',
-    default => '3',
+    builder    => '_debug',
+    trigger => \&_debug_set,
+    lazy_build => 1,
 );
 has instance_cache => (
     is      => 'rw',
@@ -175,6 +178,32 @@ sub get_instance {
     );
 }
 
+sub _log { Data::Context::Log->new( level => $_[0]->debug ); }
+sub _debug { 3 }
+sub _debug_set {
+    my ($self, $new_debug ) = @_;
+    if ( ref $self->log eq 'Data::Context::Log' ) {
+        $self->log->level( $new_debug );
+    }
+    return $new_debug;
+}
+
+package Data::Context::Log;
+
+use Moose;
+use Data::Dumper qw/Dumper/;
+
+has level => ( is => 'rw', isa => 'Int', default => 3 );
+sub debug { my $self = shift; $self->_log( 'DEBUG', @_ ) if $self->level <= 1 }
+sub info  { my $self = shift; $self->_log( 'INFO' , @_ ) if $self->level <= 2 }
+sub warn  { my $self = shift; $self->_log( 'WARN' , @_ ) if $self->level <= 3 }
+sub error { my $self = shift; $self->_log( 'ERROR', @_ ) if $self->level <= 4 }
+sub fatal { my $self = shift; $self->_log( 'FATAL', @_ ) if $self->level <= 5 }
+
+sub _log {
+    my ($self, $level, @message) = @_;
+    print {*STDERR} localtime . " [$level] ", @message, "\n";
+}
 1;
 
 __END__
