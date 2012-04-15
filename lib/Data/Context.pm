@@ -36,12 +36,12 @@ has path => (
     coerce   => 1,
     required => 1,
 );
-has fall_back => (
+has fallback => (
     is      => 'rw',
     isa     => 'Bool',
     default => 0,
 );
-has fall_back_depth => (
+has fallback_depth => (
     is      => 'rw',
     isa     => 'Int',
     default => 0,
@@ -163,7 +163,7 @@ sub get_instance {
             last PATH;
         }
 
-        last if !$self->fall_back || ( $self->fall_back_depth && $count++ >= $self->fall_back_depth );
+        last if !$self->fallback || ( $self->fallback_depth && $count++ >= $self->fallback_depth );
 
         pop @path;
     }
@@ -290,8 +290,8 @@ the parameters passed in both cases are
 
 Data::Context Configuration
     path      string or list of strings containing directory names to be searched config files
-    fall_back bool if true if a config isn't found the parent config will be searched for etc
-    fall_back_depth
+    fallback bool if true if a config isn't found the parent config will be searched for etc
+    fallback_depth
               If set to a non zero value the fall back will limited to this number of times
     actions   hashref of coderefs, allows simple adding of extra methods to Data::Context::Actions
     action_class
@@ -307,6 +307,117 @@ Data::Context Configuration
 
 =head1 SUBROUTINES/METHODS
 
+=head2 C<new (...)>
+
+Parameters to new:
+
+=over 4
+
+=item path
+
+The directory path (or a list of paths) where the configuration files can be found
+
+=item fallback
+
+A bool if set to true will allow the falling back along the path of the
+config specified.
+
+ eg config path = my/config/file
+
+if fallback is false the defalut search performed (for each directory in $dc->path) is
+
+ my/config/file.dc.js
+ my/config/file.dc.json
+ my/config/file.dc.yml
+ my/config/file.dc.xml
+ my/config/_default.dc.js
+ my/config/_default.dc.json
+ my/config/_default.dc.yml
+ my/config/_default.dc.xml
+
+if fallback is true the search is (just for the .dc.js)
+
+ my/config/file.dc.js
+ my/config/_default.dc.js
+ my/config.dc.js
+ my/_default.dc.js
+ my.dc.js
+ _default.dc.js
+
+=item fallback_depth
+
+f fallback is true this if set to a non zero +ve int will limit the number
+of time a fallback will occur. eg from the above example
+
+fallback_depth = 0 or 2
+
+ my/config/file.dc.js
+ my/config/_default.dc.js
+ my/config.dc.js
+ my/_default.dc.js
+ my.dc.js
+ _default.dc.js
+
+fallback_depth = 1
+
+ my/config/file.dc.js
+ my/config/_default.dc.js
+ my/config.dc.js
+ my/_default.dc.js
+
+=item actions
+
+A hash ref of code refs to allow the simple adding of default actions. The
+key can be used in templates METHOD parameter and the code will be called
+when found.
+
+=item action_class
+
+If you want to use your own default class for actions (ie you don't want
+to specify C<actions> and don't want to have to always specify MODULE).
+Your class should inherit from L<Data::Context::Action> to be safe.
+
+=item action_method
+
+The default action_method is get_data, through this parameter you may choose
+a different method name.
+
+=item file_suffixes
+
+This allows the setting of what file suffixes will be used for loading the
+various config tyoes. Default:
+
+ {
+   js   => '.dc.js',
+   json => '.dc.json',
+   yaml => '.dc.yml',
+   xml  => '.dc.xml',
+ }
+
+=item file_suffix_order
+
+Specify the order to search for various file types. If you will only use
+one config type you can specify just that type to speed up the searching.
+Default: [ js, json, yaml, xml ]
+
+=item file_default
+
+Sets the name of the default config file name (_default by default). If you
+unset this value, falling back to a default will be disabled
+
+=item log
+
+A log object should be compatible with a L<Catalyst::Log>, L<Log::Log4perl>,
+etc logger object. The default value just writes to STDERR.
+
+=item debug
+
+When using the default logger for C<log>. This sets the level of logging.
+1 = most information, 5 = almost none, default is 3 warnings and higher
+messages
+
+=end
+
 =head2 C<get ($path, $vars)>
 
 Reads the config represented by C<$path> and apply the context variable
@@ -318,9 +429,16 @@ Creates (or retreives from cache) an instance of the config C<$paht>.
 
 =head1 DIAGNOSTICS
 
+By default C<Data::Context> writes messages to STDERR (via it's simple log
+object). More detailed messages can be had by upping the debug level (by
+lowering the value of debug, 1 out puts all messages, 2 - info and above,
+3 - warnings and above, 4 - errors and above, 5 - fatal errors)
+
 =head1 CONFIGURATION AND ENVIRONMENT
 
 =head1 DEPENDENCIES
+
+L<Moose>, L<Moose::Util::TypeConstraints>
 
 =head1 INCOMPATIBILITIES
 

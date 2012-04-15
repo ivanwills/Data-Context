@@ -25,8 +25,8 @@ sub test_creation {
 
 sub test_getting {
     my $dc = Data::Context->new(
-        path      => "$path",
-        fall_back => 1,
+        path     => "$path",
+        fallback => 1,
     );
     my $data = $dc->get( 'data', { test => { value => [qw/a b/] } } );
 
