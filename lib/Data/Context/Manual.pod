@@ -66,7 +66,7 @@ Data::Context::Manual
 The power of L<Data::Context> is it's simple handling of many configuration
 files. It supports configuration files in JSON format (strict & relaxed
 variants), YAML and XML (via XML::Simple). Basically the aim is to support
-any format that allows arbitary depth datastructures (eg not ini style files).
+any format that allows arbitrary depth data structures (eg not ini style files).
 
 =head2 Inheritance
 
@@ -78,7 +78,7 @@ inherit another file. No checking is done circular references.
 =head2 Variable substitutions
 
 Config files may contain markers for data to be substituted the specified
-position at run time.This consists of a dot seperated list of hash keys or
+position at run time.This consists of a dot separated list of hash keys or
 array indexes surrounded by hashes (#).
 
  eg #my.path.3.value.0#
@@ -116,7 +116,7 @@ used.
 
 The contents of the hash containing C<MODULE> and/or C<METHOD> are passed to
 the method, along with the C<vars> the request was called with, the dotted
-path throught the config and a reference to the L<Data::Context::Instance>
+path thought the config and a reference to the L<Data::Context::Instance>
 object. The return value of the call is used to replace the original hash
 value. That is unless the returned value is an L<AnyEvent::CondVar> variable.
 If the result is a condvar then it will be recv()ed allowing for multiple
@@ -126,14 +126,14 @@ to the ->send) is used to replace the original hash.
 =head3 Ordering
 
 The default order that actions are called is the reverse of the order that
-they are encountered. This allows an action to inlucde the output of
+they are encountered. This allows an action to include the output of
 another action. If this ordering is not what the application requires, the
 hash where the action is defined can specify C<ORDER> to overwrite the
 default order. If C<ORDER> is a positive integer (including 0) then the
-method will be called before other non ordered methods (but in increasind
-numberical order by C<ORDER>). If the value is negative then it will be
-run after all non ordered actions (again -ve C<ORDER>s will be run in
-increasing numberical order ie most negative to lease negative).
+method will be called before other non ordered methods (but in increasing
+numerical order by C<ORDER>). If the value is negative then it will be
+run after all non ordered actions (again negative C<ORDER>s will be run in
+increasing numerical order ie most negative to lease negative).
 
     eg data.dc.yml
     actions:

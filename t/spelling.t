@@ -43,5 +43,8 @@ add_stopwords(qw/
     Initialises
     fallback
     lol
+    condvar
+    config's
+    ini
 /);
 all_pod_files_spelling_ok();
