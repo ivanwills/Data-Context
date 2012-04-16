@@ -52,7 +52,7 @@ sub lol_path {
             $replacer = sub {  $current->[$item] = shift };
             $point = $point->[$item];
         }
-        elsif ( blessed $point && $point->can( $path[0] ) ) {
+        elsif ( blessed $point && $point->can( $item ) ) {
             $replacer = undef;
             $point = $point->$item();
         }
@@ -87,6 +87,12 @@ sub lol_iterate {
             for my $i ( 0 .. @$point - 1 ) {
                 $code->( $point->[$i], "$path$i" );
                 lol_iterate( $point->[$i], $code, "$path$i" ) if ref $point->[$i];
+            }
+        }
+        elsif ( blessed $point && eval { %{$point} } ) {
+            for my $key ( keys %$point ) {
+                $code->( $point->{$key}, "$path$key" );
+                lol_iterate( $point->{$key}, $code, "$path$key" ) if ref $point->{$key};
             }
         }
     }
