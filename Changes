@@ -1,5 +1,5 @@
 Revision history for Data-Context
 
-0.0.1   13-04-2012
+0.0.1   2012-04-16
+        Basic functionality, variable substitutions and event actions all implemented
         First version, released on an unsuspecting world.
-
