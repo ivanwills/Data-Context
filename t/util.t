@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-use feature qw/:5.10/;
 use Test::More tests => 12;
 use Data::Dumper qw/Dumper/;
 
@@ -15,7 +14,7 @@ done_testing;
 sub test_lol_path {
 
     for my $path ( keys %$tests ) {
-        is lol_path($data, $path), $tests->{$path}, "lol_path '$path' returns '".($tests->{$path}//'')."'";
+        is lol_path($data, $path), $tests->{$path}, "lol_path '$path' returns '".(defined $tests->{$path} ? $tests->{$path} : '')."'";
     }
 }
 
@@ -30,7 +29,7 @@ sub test_lol_iterate {
     );
 
     for my $path ( keys %$tests ) {
-        is $result{$path}, $tests->{$path}, "lol_iterate saw '$path' had a value of '".($tests->{$path}//'')."'";
+        is $result{$path}, $tests->{$path}, "lol_iterate saw '$path' had a value of '".(defined $tests->{$path} ? $tests->{$path} : '')."'";
     }
 }
 

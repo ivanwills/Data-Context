@@ -16,6 +16,11 @@ my $builder = Module::Build->new(
         'Moose::Util::TypeConstraints' => 0,
         'Path::Class'                  => 0,
     },
+    recommends => {
+        'JSON'        => 0,
+        'YAML::XS'    => 0,
+        'XML::Simple' => 0,
+    },
     build_requires => {
         'Test::More'       => 0,
         'Test::NoWarnings' => 0,

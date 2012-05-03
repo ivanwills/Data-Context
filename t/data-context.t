@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More;# tests => 2;
+use Test::More;
 use Path::Class;
 use Data::Dumper qw/Dumper/;
 use AnyEvent;
@@ -8,6 +8,9 @@ use AnyEvent::HTTP;
 use Test::Warn;
 
 use Data::Context;
+
+eval { require JSON };
+plan skip_all => 'This test requires JSON to be installed to run' if $@;
 
 my $path = file($0)->parent->subdir('dc');
 
