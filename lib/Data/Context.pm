@@ -7,7 +7,6 @@ package Data::Context;
 # $Revision$, $Source$, $Date$
 
 use Moose;
-use 5.010;
 use version;
 use Carp;
 use Scalar::Util;
@@ -19,7 +18,7 @@ use Path::Class;
 
 use Data::Context::Instance;
 
-our $VERSION     = version->new('0.0.1');
+our $VERSION     = version->new('0.0.2');
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
 
@@ -215,7 +214,7 @@ Data::Context - Configuration data with context
 
 =head1 VERSION
 
-This documentation refers to Data::Context version 0.1.
+This documentation refers to Data::Context version 0.0.2.
 
 =head1 SYNOPSIS
 

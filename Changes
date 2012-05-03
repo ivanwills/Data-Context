@@ -1,5 +1,9 @@
 Revision history for Data-Context
 
+0.0.2   2012-05-03
+        #76915: Fixed test dependency on JSON (and other optional dependencies) - added checks to see if optional modules are installed and skip tests if they are not
+        Improved tests, increased test coverage
+
 0.0.1   2012-04-16
         Basic functionality, variable substitutions and event actions all implemented
         First version, released on an unsuspecting world.

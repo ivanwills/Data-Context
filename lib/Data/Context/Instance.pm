@@ -18,7 +18,7 @@ use Clone qw/clone/;
 use Data::Context::Util qw/lol_path lol_iterate/;
 use Class::Inspector;
 
-our $VERSION     = version->new('0.0.1');
+our $VERSION     = version->new('0.0.2');
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
 
@@ -213,7 +213,7 @@ Data::Context::Instance - The in memory instance of a data context config file
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Instance version 0.1.
+This documentation refers to Data::Context::Instance version 0.0.2.
 
 =head1 SYNOPSIS
 
