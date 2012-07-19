@@ -27,4 +27,6 @@ t/dc/_default.dc.xml
 t/dc/deep/child.dc.yml
 t/instance.t
 t/util.t
-
+eg/data.pl
+eg/dc/_default.dc.js
+eg/dc/index.dc.js
