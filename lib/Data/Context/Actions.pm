@@ -7,6 +7,7 @@ package Data::Context::Actions;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use warnings;
 use version;
 use Carp;
 use Scalar::Util;
