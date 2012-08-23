@@ -15,9 +15,11 @@ my $builder = Module::Build->new(
         'Moose'                        => 0,
         'Moose::Util::TypeConstraints' => 0,
         'Path::Class'                  => 0,
+        'version'                      => 0,
     },
     build_requires => {
         'Test::More'       => 0,
+        'Test::Warn'       => 0,
         'Test::NoWarnings' => 0,
         'AnyEvent'         => 0,
         'AnyEvent::HTTP'   => 0,
