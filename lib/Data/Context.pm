@@ -203,7 +203,7 @@ sub fatal { my $self = shift; $self->_log( 'FATAL', @_ ) if $self->level <= 5 }
 sub _log {
     my ($self, $level, @message) = @_;
     chomp $message[-1];
-    CORE::warn localtime . " [$level] ", @message, "\n";
+    CORE::warn( localtime() . " [$level] ", @message, "\n" );
 }
 1;
 
