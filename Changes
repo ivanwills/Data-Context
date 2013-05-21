@@ -1,5 +1,13 @@
 Revision history for Data-Context
 
+0.0.4   2013-05-21
+        Added more detailed debugging
+        Fixed warning?
+        Changed to work on Windows systems
+        Fixed so test works better in Windows
+        RT 79134: Added missing dependencies
+        Added more recommended modules
+
 0.0.3   2012-07-19
         Fixed Kwalitee test
         Upped version number

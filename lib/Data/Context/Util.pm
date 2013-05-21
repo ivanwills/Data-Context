@@ -17,7 +17,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use base qw/Exporter/;
 
-our $VERSION     = version->new('0.0.3');
+our $VERSION     = version->new('0.0.4');
 our @EXPORT_OK   = qw/lol_path lol_iterate/;
 our %EXPORT_TAGS = ();
 #our @EXPORT      = qw//;
@@ -110,7 +110,7 @@ Data::Context::Util - Helper functions for Data::Context
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Util version 0.0.3.
+This documentation refers to Data::Context::Util version 0.0.4.
 
 =head1 SYNOPSIS
 
