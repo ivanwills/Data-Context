@@ -60,8 +60,10 @@ sub test_getting_no_fallback {
     ok !$data, "get no data";
 
     $data = eval { $dc->get( 'defaultable', { test => { value => [qw/a b/] } } ) };
+    my $e = $@;
     #diag Dumper $data;
-    ok $data, "get default data";
+    ok $data, "get default data"
+        or diag "Error $e";
 }
 sub test_loging {
     my $dc = Data::Context->new(
