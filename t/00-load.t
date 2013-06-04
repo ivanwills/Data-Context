@@ -3,19 +3,11 @@
 use strict;
 use warnings;
 use Test::More;
-use Path::Class;
 
-my $lib = file($0)->parent->parent->subdir('lib');
-my @files = $lib->children;
-
-while ( my $file = shift @files ) {
-    if ( -d $file ) {
-        push @files, $file->children;
-    }
-    elsif ( $file =~ /[.]pm$/ ) {
-        require_ok $file;
-    }
-}
+use_ok('Data::Context');
+use_ok('Data::Context::Actions');
+use_ok('Data::Context::Instance');
+use_ok('Data::Context::Util');
 
 diag( "Testing Data::Context $Data::Context::VERSION, Perl $], $^X" );
 done_testing;
