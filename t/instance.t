@@ -22,7 +22,7 @@ done_testing;
 sub test_object {
     my $dci;
     SKIP: {
-        skip 1 => "Need JSON to run" unless $have_json;
+        skip "Need JSON to run" => 1 unless $have_json;
 
         $dci = Data::Context::Instance->new(
             path => 'data',
@@ -38,7 +38,7 @@ sub test_object {
     }
 
     SKIP: {
-        skip 1 => "Need YAML::XS to run" unless $have_yaml;
+        skip "Need YAML::XS to run" => 1 unless $have_yaml;
 
         $dci = Data::Context::Instance->new(
             path => 'deep/child',
@@ -53,7 +53,7 @@ sub test_object {
     }
 
     SKIP: {
-        skip 1 => "Need XML::Simple to run" unless $have_xml;
+        skip "Need XML::Simple to run" => 1 unless $have_xml;
 
         $dci = Data::Context::Instance->new(
             path => 'data',
