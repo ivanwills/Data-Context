@@ -19,7 +19,7 @@ use Path::Class;
 
 use Data::Context::Instance;
 
-our $VERSION     = version->new('0.0.4');
+our $VERSION     = version->new('0.0.5');
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
 
@@ -215,7 +215,7 @@ Data::Context - Configuration data with context
 
 =head1 VERSION
 
-This documentation refers to Data::Context version 0.0.4.
+This documentation refers to Data::Context version 0.0.5.
 
 =head1 SYNOPSIS
 

@@ -16,7 +16,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Data::Context::Util qw/lol_path lol_iterate/;
 
-our $VERSION     = version->new('0.0.4');
+our $VERSION     = version->new('0.0.5');
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
 
@@ -47,7 +47,7 @@ Data::Context::Actions - Contains all the default actions available to a config
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Actions version 0.0.4.
+This documentation refers to Data::Context::Actions version 0.0.5.
 =head1 SYNOPSIS
 
    use Data::Context::Actions;

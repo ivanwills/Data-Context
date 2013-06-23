@@ -1,5 +1,13 @@
 Revision history for Data-Context
 
+0.0.5   2013-06-23
+        Fixed skip argument order
+        Fixed timing issue when stat is initted before file is set
+        Added check that XML::Simple is actually installed
+        Clean white space
+        Moved to direct use_ok tests
+        Added configure requires section
+
 0.0.4   2013-05-21
         Added more detailed debugging
         Fixed warning?
