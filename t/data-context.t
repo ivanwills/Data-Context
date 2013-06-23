@@ -62,8 +62,12 @@ sub test_getting_no_fallback {
     $data = eval { $dc->get( 'defaultable', { test => { value => [qw/a b/] } } ) };
     my $e = $@;
     #diag Dumper $data;
-    ok $data, "get default data"
-        or diag "Error $e";
+    SKIP: {
+        eval { require XML::Simple };
+        skip "XML::Simple not installed", 1 if $@;
+        ok $data, "get default data"
+            or diag "Error $e";
+    }
 }
 sub test_loging {
     my $dc = Data::Context->new(
