@@ -28,9 +28,9 @@ my $builder = Module::Build->new(
         'AnyEvent::HTTP'   => 0,
     },
     recommends => {
-        'JSON'        => 0,
-        'YAML::XS'    => 0,
-        'XML::Simple' => 0,
+        'JSON'               => 0,
+        'YAML::XS'           => 0,
+        'XML::Simple'        => 0,
         'Test::Spelling'     => 0,
         'Test::Perl::Critic' => 0,
         'Test::Kwalitee'     => 0,
