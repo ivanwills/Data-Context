@@ -45,8 +45,9 @@ has dc => (
     weak_ref => 1,
 );
 has stats => (
-    is => 'rw',
-    builder => '_stats',
+    is         => 'rw',
+    lazy_build => 1,
+    builder    => '_stats',
 );
 has raw => (
     is  => 'rw',
