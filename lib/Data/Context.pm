@@ -19,9 +19,7 @@ use Path::Class;
 
 use Data::Context::Instance;
 
-our $VERSION     = version->new('0.0.5');
-our @EXPORT_OK   = qw//;
-our %EXPORT_TAGS = ();
+our $VERSION = version->new('0.0.5');
 
 subtype 'ArrayRefStr'
     => as 'ArrayRef[Str]';

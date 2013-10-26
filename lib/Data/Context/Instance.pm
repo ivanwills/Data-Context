@@ -19,9 +19,7 @@ use Clone qw/clone/;
 use Data::Context::Util qw/lol_path lol_iterate/;
 use Class::Inspector;
 
-our $VERSION     = version->new('0.0.5');
-our @EXPORT_OK   = qw//;
-our %EXPORT_TAGS = ();
+our $VERSION = version->new('0.0.5');
 
 has path => (
     is       => 'rw',
