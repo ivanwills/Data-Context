@@ -19,6 +19,10 @@ t/spelling.t
 lib/Data/Context/Actions.pm
 lib/Data/Context/Instance.pm
 lib/Data/Context/Manual.pod
+lib/Data/Context/Finder.pm
+lib/Data/Context/Finder/File.pm
+lib/Data/Context/Loader.pm
+lib/Data/Context/Loader/File.pm
 lib/Data/Context/Util.pm
 t/actions.t
 t/data-context.t
