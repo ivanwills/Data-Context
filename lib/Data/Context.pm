@@ -14,26 +14,13 @@ use Scalar::Util;
 use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use Moose::Util::TypeConstraints;
 use Path::Class;
 
 use Data::Context::Instance;
+use Data::Context::Finder::File;
 
 our $VERSION = version->new('0.0.5');
 
-subtype 'ArrayRefStr'
-    => as 'ArrayRef[Str]';
-
-coerce 'ArrayRefStr'
-    => from 'Str'
-    => via { [$_] };
-
-has path => (
-    is       => 'rw',
-    isa      => 'ArrayRefStr',
-    coerce   => 1,
-    required => 1,
-);
 has fallback => (
     is      => 'rw',
     isa     => 'Bool',
@@ -58,29 +45,6 @@ has action_method => (
     isa     => 'Str',
     default => 'get_data',
 );
-has file_suffixes => (
-    is      => 'rw',
-    isa     => 'HashRef[Str]',
-    default => sub {
-        return {
-             json => '.dc.json',
-             js   => '.dc.js',
-             yaml => '.dc.yml',
-             xml  => '.dc.xml',
-        };
-    },
-);
-has file_suffix_order => (
-    is      => 'rw',
-    isa     => 'ArrayRefStr',
-    coerce  => 1,
-    default => sub { [qw/js json yaml xml/] },
-);
-has file_default => (
-    is      => 'rw',
-    isa     => 'Str',
-    default => '_default',
-);
 has log => (
     is         => 'rw',
     isa        => 'Object',
@@ -100,6 +64,29 @@ has instance_cache => (
     default => sub {{}},
     init_arg => undef,
 );
+has finder => (
+    is       => 'rw',
+    isa      => ' Data::Context::Finder',
+    required => 1,
+);
+
+around BUILDARGS => sub {
+    my ($orig, $class, @args) = @_;
+    my $args
+        = !@args     ? {}
+        : @args == 1 ? $args[0]
+        :              {@args};
+
+    if ($args->{finder}) {
+        $args->{finder} = Data::Context::Finder::File->new(
+            map { $_ => $args->{$_} }
+            grep { $_ eq 'path' || /^file_/ }
+            keys %{ $args }
+        );
+    }
+
+    return $class->$orig($args);
+};
 
 sub get {
     my ( $self, $path, $vars ) = @_;
@@ -120,59 +107,25 @@ sub get_instance {
 
     my @path  = split m{/+}, $path;
     my $count = 1;
-    my $file;
-    my $file_type;
+    my $loader;
 
     # find the most appropriate file
     PATH:
     while ( @path ) {
-        my $default;
-        my $default_type;
+        $loader = $self->finder(@path);
 
-        for my $search ( @{ $self->path } ) {
-            for my $type ( @{ $self->file_suffix_order } ) {
-                my $config = file(
-                    $search,
-                    @path[0 .. @path-2],
-                    $path[-1] . $self->file_suffixes->{$type}
-                );
-                if ( -e $config ) {
-                    $file = $config;
-                    $file_type = $type;
-                    last PATH;
-                }
-                next if $default;
-
-                $config = file(
-                    $search,
-                    @path[0 .. @path - 2],
-                    $self->file_default . $self->file_suffixes->{$type}
-                );
-                if ( -e $config ) {
-                    $default = $config;
-                    $default_type = $type;
-                }
-            }
-        }
-
-        if ($default) {
-            $file = $default;
-            $file_type = $default_type;
-            last PATH;
-        }
-
+        last if $loader;
         last if !$self->fallback || ( $self->fallback_depth && $count++ >= $self->fallback_depth );
 
         pop @path;
     }
 
-    confess "Could not find a data context config file for '$path'\n" if ! $file;
+    confess "Could not find a data context config file for '$path'\n" if ! $loader;
 
     return $self->instance_cache->{$path} = Data::Context::Instance->new(
-        path => $path,
-        file => $file,
-        type => $file_type,
-        dc   => $self,
+        path   => $path,
+        loader => $loader,
+        dc     => $self,
     );
 }
 
@@ -189,7 +142,6 @@ sub _debug_set {
 package Data::Context::Log;
 
 use Moose;
-use Data::Dumper qw/Dumper/;
 
 has level => ( is => 'rw', isa => 'Int', default => 3 );
 sub debug { my $self = shift; $self->_log( 'DEBUG', @_ ) if $self->level <= 1 }
