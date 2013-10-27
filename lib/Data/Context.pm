@@ -83,7 +83,6 @@ around BUILDARGS => sub {
             grep { $_ eq 'path' || /^file_/ }
             keys %{ $args }
         );
-        warn Dumper $args;
     }
 
     return $class->$orig($args);
