@@ -92,45 +92,36 @@ __END__
 
 =head1 NAME
 
-Data::Context::Loader::File - <One-line description of module's purpose>
+Data::Context::Loader::File - Loads a config file from disk
 
 =head1 VERSION
 
 This documentation refers to Data::Context::Loader::File version 0.0.1
 
-
 =head1 SYNOPSIS
 
    use Data::Context::Loader::File;
 
-   # Brief but working code example(s) here showing the most common usage(s)
-   # This section will be as far as many users bother reading, so make it as
-   # educational and exemplary as possible.
-
+   # Load a file of relaxed json type
+   my $file = Data::Context::Loader::File->new(
+       file => '/path/config.dc.js',
+       type => 'js',
+   );
 
 =head1 DESCRIPTION
 
-A full description of the module and its features.
-
-May include numerous subsections (i.e., =head2, =head3, etc.).
-
+Loads files found by L<Data::Context::Finder::File> and performs checks to
+see if the file has changed on disk.
 
 =head1 SUBROUTINES/METHODS
 
-A separate section listing the public components of the module's interface.
+=head2A C<changed ()>
 
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module
-provides.
+Checks if the file has changed on disk
 
-Name the section accordingly.
+=head2 C<load ()>
 
-In an object-oriented module, this section should begin with a sentence (of the
-form "An object of this class represents ...") to give the reader a high-level
-context to help them understand the methods that are subsequently described.
-
-
-
+Loads the file passing it with the appropriate parser.
 
 =head1 DIAGNOSTICS
 

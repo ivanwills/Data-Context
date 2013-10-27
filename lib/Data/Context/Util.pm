@@ -99,7 +99,7 @@ sub lol_iterate {
 }
 
 our %required;
-sub do_require {
+sub do_require($) {
     my ($module) = @_;
 
     return if $required{$module}++;
@@ -196,6 +196,10 @@ It is called as:
 
 Recursively iterates through a data structure calling C<$code> for each value
 encountered.
+
+=head2 C<do_require ($module)>
+
+Requires the specified module (if not previously required
 
 =head1 DIAGNOSTICS
 
