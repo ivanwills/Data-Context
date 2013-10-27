@@ -6,6 +6,7 @@ use Data::Dumper qw/Dumper/;
 
 use Data::Context;
 use Data::Context::Instance;
+use Data::Context::Loader::File;
 my $dc = Data::Context->new(
     path => file($0)->parent->subdir('dc') . '',
 );
@@ -26,8 +27,10 @@ sub test_object {
 
         $dci = Data::Context::Instance->new(
             path => 'data',
-            file => file($0)->parent->file('dc/data.dc.js'),
-            type => 'js',
+            loader => Data::Context::Loader::File->new(
+                file => file($0)->parent->file('dc/data.dc.js'),
+                type => 'js',
+            ),
             dc   => $dc,
         )->init;
 
@@ -42,8 +45,10 @@ sub test_object {
 
         $dci = Data::Context::Instance->new(
             path => 'deep/child',
-            file => file($0)->parent->file('dc/deep/child.dc.yml'),
-            type => 'yaml',
+            loader => Data::Context::Loader::File->new(
+                file => file($0)->parent->file('dc/deep/child.dc.yml'),
+                type => 'yaml',
+            ),
             dc   => $dc,
         )->init;
 
@@ -57,8 +62,10 @@ sub test_object {
 
         $dci = Data::Context::Instance->new(
             path => 'data',
-            file => file($0)->parent->file('dc/_default.dc.xml'),
-            type => 'xml',
+            loader => Data::Context::Loader::File->new(
+                file => file($0)->parent->file('dc/_default.dc.xml'),
+                type => 'xml',
+            ),
             dc   => $dc,
         )->init;
 
