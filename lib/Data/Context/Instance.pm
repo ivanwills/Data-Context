@@ -16,7 +16,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Hash::Merge;
 use Clone qw/clone/;
-use Data::Context::Util qw/lol_path lol_iterate/;
+use Data::Context::Util qw/lol_path lol_iterate do_require/;
 use Class::Inspector;
 
 our $VERSION = version->new('0.0.5');
@@ -26,14 +26,9 @@ has path => (
     isa      => 'Str',
     required => 1,
 );
-has file => (
+has loader => (
     is       => 'rw',
-    isa      => 'Path::Class::File',
-    required => 1,
-);
-has type => (
-    is       => 'ro',
-    isa      => 'Str',
+    isa      => 'Data::Context::Loader',
     required => 1,
 );
 has dc => (
@@ -41,11 +36,6 @@ has dc => (
     isa      => 'Data::Context',
     required => 1,
     weak_ref => 1,
-);
-has stats => (
-    is         => 'rw',
-    lazy_build => 1,
-    builder    => '_stats',
 );
 has raw => (
     is  => 'rw',
@@ -57,45 +47,12 @@ has actions => (
     default => sub {{}},
 );
 
-sub _stats {
-    my ($self) = @_;
-    my $stat = $self->file->stat;
-    if ( !-f $self->file ) {
-        my $msg = 'Cannot find the file "' . $self->file . '"';
-        $self->log->error($msg);
-        confess $msg;
-    }
-
-    return {
-        size     => $stat->size,
-        modified => $stat->mtime,
-    };
-}
-
 sub init {
     my ($self) = @_;
-    my $raw;
 
-    # check if we already have the raw data and if so that it is current
-    return $self if $self->raw && -s $self->file == $self->stats->{size};
+    return $self if $self->raw && !$self->loader->changed;
 
-    # get the raw data
-    if ( $self->type eq 'json' ) {
-        _do_require('JSON');
-        $raw = JSON->new->utf8->shrink->decode( scalar $self->file->slurp );
-    }
-    elsif ( $self->type eq 'js' ) {
-        _do_require('JSON');
-        $raw = JSON->new->utf8->relaxed->shrink->decode( scalar $self->file->slurp );
-    }
-    elsif ( $self->type eq 'yaml' ) {
-        _do_require('YAML::XS');
-        $raw = YAML::XS::Load( scalar $self->file->slurp );
-    }
-    elsif ( $self->type eq 'xml' ) {
-        _do_require('XML::Simple');
-        $raw = XML::Simple::XMLin( scalar $self->file->slurp );
-    }
+    my $raw = $self->loader->load();
 
     # merge in any inherited data
     if ( $raw->{PARENT} ) {
@@ -149,7 +106,7 @@ sub process_data {
     if ( !ref $data ) {
         if ( $data =~ /^\# (.*) \#$/xms ) {
             my $data_path = $1;
-            _do_require( $self->dc->action_class );
+            do_require( $self->dc->action_class );
             $self->actions->{$path} = {
                 module => $self->dc->action_class,
                 method => 'expand_vars',
@@ -165,7 +122,7 @@ sub process_data {
             order  => $data->{ORDER},
             found  => $$count++,
         };
-        _do_require( $self->actions->{$path}{module} );
+        do_require( $self->actions->{$path}{module} );
     }
 
     return;
@@ -184,23 +141,6 @@ sub _sort_optional {
     } keys %$hash;
 
     return @sorted;
-}
-
-our %required;
-sub _do_require {
-    my ($module) = @_;
-
-    return if $required{$module}++;
-
-    # check if namespace appears to be loaded
-    return if Class::Inspector->loaded($module);
-
-    # Try loading namespace
-    $module =~ s{::}{/}g;
-    $module .= '.pm';
-    eval { require $module };
-
-    confess $@ if $@;
 }
 
 1;

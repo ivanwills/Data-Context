@@ -17,10 +17,8 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use base qw/Exporter/;
 
-our $VERSION     = version->new('0.0.5');
-our @EXPORT_OK   = qw/lol_path lol_iterate/;
-our %EXPORT_TAGS = ();
-#our @EXPORT      = qw//;
+our $VERSION   = version->new('0.0.5');
+our @EXPORT_OK = qw/lol_path lol_iterate do_require/;
 
 sub lol_path {
     my ($lol, $path) = @_;
@@ -98,6 +96,23 @@ sub lol_iterate {
     }
 
     return;
+}
+
+our %required;
+sub do_require {
+    my ($module) = @_;
+
+    return if $required{$module}++;
+
+    # check if namespace appears to be loaded
+    return if Class::Inspector->loaded($module);
+
+    # Try loading namespace
+    $module =~ s{::}{/}g;
+    $module .= '.pm';
+    eval { require $module };
+
+    confess $@ if $@;
 }
 
 1;

@@ -77,12 +77,13 @@ around BUILDARGS => sub {
         : @args == 1 ? $args[0]
         :              {@args};
 
-    if ($args->{finder}) {
+    if ( !$args->{finder} ) {
         $args->{finder} = Data::Context::Finder::File->new(
             map { $_ => $args->{$_} }
             grep { $_ eq 'path' || /^file_/ }
             keys %{ $args }
         );
+        warn Dumper $args;
     }
 
     return $class->$orig($args);
@@ -112,7 +113,7 @@ sub get_instance {
     # find the most appropriate file
     PATH:
     while ( @path ) {
-        $loader = $self->finder(@path);
+        $loader = $self->finder->find(@path);
 
         last if $loader;
         last if !$self->fallback || ( $self->fallback_depth && $count++ >= $self->fallback_depth );

@@ -1,6 +1,6 @@
-package Data::Context::Finder::File;
+package Data::Context::Loader::File;
 
-# Created on: 2013-10-26 20:02:08
+# Created on: 2013-10-27 20:02:37
 # Create by:  Ivan Wills
 # $Id$
 # $Revision$, $HeadURL$, $Date$
@@ -13,94 +13,77 @@ use Scalar::Util;
 use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use Moose::Util::TypeConstraints;
-use Path::Class;
-use Data::Context::Loader::File;
+use Data::Context::Util qw/do_require/;
 
 our $VERSION = version->new('0.0.5');
 
-extends 'Data::Context::Finder';
+extends 'Data::Context::Loader';
 
-subtype 'ArrayRefStr'
-    => as 'ArrayRef[Str]';
-
-coerce 'ArrayRefStr'
-    => from 'Str'
-    => via { [$_] };
-
-has path => (
+has file => (
     is       => 'rw',
-    isa      => 'ArrayRefStr',
-    coerce   => 1,
+    isa      => 'Path::Class::File',
     required => 1,
 );
-has suffixes => (
-    is      => 'rw',
-    isa     => 'HashRef[Str]',
-    default => sub {
-        return {
-             json => '.dc.json',
-             js   => '.dc.js',
-             yaml => '.dc.yml',
-             xml  => '.dc.xml',
-        };
-    },
+has type => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
 );
-has suffix_order => (
-    is      => 'rw',
-    isa     => 'ArrayRefStr',
-    coerce  => 1,
-    default => sub { [qw/js json yaml xml/] },
-);
-has default => (
-    is      => 'rw',
-    isa     => 'Str',
-    default => '_default',
+has stats => (
+    is         => 'rw',
+    lazy_build => 1,
+    builder    => '_stats',
+    init_arg   => undef,
 );
 
-sub find {
-    my ($self, @path) = @_;
-    my $file;
-    my $file_type;
-
-    my $default;
-    my $default_type;
-
-    for my $search ( @{ $self->path } ) {
-        for my $type ( @{ $self->suffix_order } ) {
-            my $config = file(
-                $search,
-                @path[0 .. @path-2],
-                $path[-1] . $self->suffixes->{$type}
-            );
-            if ( -e $config ) {
-                return Data::Context::Loader::File->new(
-                    file => $config,
-                    type => $type,
-                );
-            }
-            next if $default;
-
-            $config = file(
-                $search,
-                @path[0 .. @path - 2],
-                $self->default . $self->suffixes->{$type}
-            );
-            if ( -e $config ) {
-                $default = $config;
-                $default_type = $type;
-            }
-        }
+sub _stats {
+    my ($self) = @_;
+    my $stat = $self->file->stat;
+    if ( !-f $self->file ) {
+        my $msg = 'Cannot find the file "' . $self->file . '"';
+        $self->log->error($msg);
+        confess $msg;
     }
 
-    if ($default) {
-        return Data::Context::Loader::File->new(
-            file => $default,
-            type => $default_type,
-        );
+    return {
+        size     => $stat->size,
+        modified => $stat->mtime,
+    };
+}
+
+sub changed {
+    my ($self) = @_;
+
+    # check if we already have the raw data and if so that it is current
+    return -s $self->file != $self->stats->{size};
+}
+
+sub load {
+    my ($self) = @_;
+    my $raw;
+
+    # get the raw data
+    if ( $self->type eq 'json' ) {
+        do_require('JSON');
+        $raw = JSON->new->utf8->shrink->decode( scalar $self->file->slurp );
+    }
+    elsif ( $self->type eq 'js' ) {
+        do_require('JSON');
+        $raw = JSON->new->utf8->relaxed->shrink->decode( scalar $self->file->slurp );
+    }
+    elsif ( $self->type eq 'yaml' ) {
+        do_require('YAML::XS');
+        $raw = YAML::XS::Load( scalar $self->file->slurp );
+    }
+    elsif ( $self->type eq 'xml' ) {
+        do_require('XML::Simple');
+        $raw = XML::Simple::XMLin( scalar $self->file->slurp );
     }
 
-    return;
+    # Reset the file stats on load.
+    $self->stats($self->_stats);
+
+    return $raw;
 }
 
 1;
@@ -109,16 +92,16 @@ __END__
 
 =head1 NAME
 
-Data::Context::Finder::File - <One-line description of module's purpose>
+Data::Context::Loader::File - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Finder::File version 0.0.1
+This documentation refers to Data::Context::Loader::File version 0.0.1
 
 
 =head1 SYNOPSIS
 
-   use Data::Context::Finder::File;
+   use Data::Context::Loader::File;
 
    # Brief but working code example(s) here showing the most common usage(s)
    # This section will be as far as many users bother reading, so make it as
