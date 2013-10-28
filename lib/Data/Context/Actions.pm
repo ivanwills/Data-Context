@@ -30,7 +30,7 @@ sub expand_vars {
     }
 
     # remove #'s
-    $value =~ s/^#|#$//g;
+    $value =~ s/^[#] | [#]$//gxms;
 
     return Data::Context::Util::lol_path( $vars, $value );
 }

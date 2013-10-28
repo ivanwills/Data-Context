@@ -60,25 +60,22 @@ sub changed {
 
 sub load {
     my ($self) = @_;
-    my $raw;
+
+    do_require(
+        $self->type eq 'json'   ? 'JSON'
+        : $self->type eq 'js'   ? 'JSON'
+        : $self->type eq 'yaml' ? 'YAML::XS'
+        : $self->type eq 'xml'  ? 'XML::Simple'
+        :                         ''
+    );
 
     # get the raw data
-    if ( $self->type eq 'json' ) {
-        do_require('JSON');
-        $raw = JSON->new->utf8->shrink->decode( scalar $self->file->slurp );
-    }
-    elsif ( $self->type eq 'js' ) {
-        do_require('JSON');
-        $raw = JSON->new->utf8->relaxed->shrink->decode( scalar $self->file->slurp );
-    }
-    elsif ( $self->type eq 'yaml' ) {
-        do_require('YAML::XS');
-        $raw = YAML::XS::Load( scalar $self->file->slurp );
-    }
-    elsif ( $self->type eq 'xml' ) {
-        do_require('XML::Simple');
-        $raw = XML::Simple::XMLin( scalar $self->file->slurp );
-    }
+    my $raw
+        = $self->type eq 'json' ? JSON->new->utf8->shrink->decode( scalar $self->file->slurp )
+        : $self->type eq 'js'   ? JSON->new->utf8->relaxed->shrink->decode(scalar $self->file->slurp)
+        : $self->type eq 'yaml' ? YAML::XS::Load( scalar $self->file->slurp )
+        : $self->type eq 'xml'  ? XML::Simple::XMLin( scalar $self->file->slurp )
+        :                         '';
 
     # Reset the file stats on load.
     $self->stats($self->_stats);

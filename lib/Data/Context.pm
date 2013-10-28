@@ -80,7 +80,7 @@ around BUILDARGS => sub {
     if ( !$args->{finder} ) {
         $args->{finder} = Data::Context::Finder::File->new(
             map { $_ => $args->{$_} }
-            grep { $_ eq 'path' || /^file_/ }
+            grep { $_ eq 'path' || /^file_/xms }
             keys %{ $args }
         );
     }
@@ -92,7 +92,7 @@ sub get {
     my ( $self, $path, $vars ) = @_;
 
     # we allow paths to be passed with leading slash but we remove before using
-    $path =~ s{^/}{};
+    $path =~ s{^/}{}xms;
 
     my $dci = $self->get_instance($path);
 
@@ -105,7 +105,7 @@ sub get_instance {
     # TODO add some cache controlls here or in ::Instance::init();
     return $self->instance_cache->{$path} if $self->instance_cache->{$path};
 
-    my @path  = split m{/+}, $path;
+    my @path  = split m{/+}xms, $path;
     my $count = 1;
     my $loader;
 

@@ -12,7 +12,6 @@ use version;
 use Carp;
 use Scalar::Util qw/blessed/;
 use List::Util;
-#use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use base qw/Exporter/;
@@ -22,7 +21,7 @@ our @EXPORT_OK = qw/lol_path lol_iterate do_require/;
 
 sub lol_path {
     my ($lol, $path) = @_;
-    my @path = split /[.]/, $path;
+    my @path = split /[.]/xms, $path;
     my $point = $lol;
     my $replacer;
 
@@ -99,7 +98,7 @@ sub lol_iterate {
 }
 
 our %required;
-sub do_require($) {   ## no critic
+sub do_require {
     my ($module) = @_;
 
     return if $required{$module}++;
@@ -108,11 +107,16 @@ sub do_require($) {   ## no critic
     return if Class::Inspector->loaded($module);
 
     # Try loading namespace
-    $module =~ s{::}{/}g;
+    $module =~ s{::}{/}gxms;
     $module .= '.pm';
-    eval { require $module };
+    eval {
+        require $module
+    };
+    if (my $e = $@) {
+        confess $e;
+    }
 
-    confess $@ if $@;
+    return;
 }
 
 1;
