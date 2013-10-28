@@ -99,7 +99,7 @@ sub lol_iterate {
 }
 
 our %required;
-sub do_require($) {
+sub do_require($) {   ## no critic
     my ($module) = @_;
 
     return if $required{$module}++;
