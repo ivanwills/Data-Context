@@ -130,7 +130,7 @@ sub get_instance {
 }
 
 sub _log {
-    my $self = @_;
+    my $self = shift;
     require Data::Context::Log;
     return Data::Context::Log->new( level => $self->debug );
 }
