@@ -52,16 +52,16 @@ has log => (
     lazy_build => 1,
 );
 has debug => (
-    is      => 'rw',
-    isa     => 'Int',
+    is         => 'rw',
+    isa        => 'Int',
     builder    => '_debug',
-    trigger => \&_debug_set,
+    trigger    => \&_debug_set,
     lazy_build => 1,
 );
 has instance_cache => (
-    is      => 'rw',
-    isa     => 'HashRef[Data::Context::Instance]',
-    default => sub {{}},
+    is       => 'rw',
+    isa      => 'HashRef[Data::Context::Instance]',
+    default  => sub {{}},
     init_arg => undef,
 );
 has finder => (
@@ -129,8 +129,12 @@ sub get_instance {
     );
 }
 
-sub _log { Data::Context::Log->new( level => $_[0]->debug ); }
-sub _debug { 3 }
+sub _log {
+    my $self = @_;
+    require Data::Context::Log;
+    return Data::Context::Log->new( level => $self->debug );
+}
+sub _debug { return 3 }
 sub _debug_set {
     my ($self, $new_debug ) = @_;
     if ( ref $self->log eq 'Data::Context::Log' ) {
@@ -139,22 +143,6 @@ sub _debug_set {
     return $new_debug;
 }
 
-package Data::Context::Log;
-
-use Moose;
-
-has level => ( is => 'rw', isa => 'Int', default => 3 );
-sub debug { my $self = shift; $self->_log( 'DEBUG', @_ ) if $self->level <= 1 }
-sub info  { my $self = shift; $self->_log( 'INFO' , @_ ) if $self->level <= 2 }
-sub warn  { my $self = shift; $self->_log( 'WARN' , @_ ) if $self->level <= 3 }
-sub error { my $self = shift; $self->_log( 'ERROR', @_ ) if $self->level <= 4 }
-sub fatal { my $self = shift; $self->_log( 'FATAL', @_ ) if $self->level <= 5 }
-
-sub _log {
-    my ($self, $level, @message) = @_;
-    chomp $message[-1];
-    CORE::warn( localtime() . " [$level] ", @message, "\n" );
-}
 1;
 
 __END__
