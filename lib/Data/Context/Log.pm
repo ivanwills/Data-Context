@@ -59,6 +59,9 @@ This documentation refers to Data::Context::Log version 0.0.1
 
 =head1 DESCRIPTION
 
+Very simple log object it only realy exists as a place holder for more
+sophisticated log objects (eg L<Log::Log4perl>).
+
 =head1 SUBROUTINES/METHODS
 
 =head2 new
