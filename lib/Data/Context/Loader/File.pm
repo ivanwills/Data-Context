@@ -115,7 +115,7 @@ see if the file has changed on disk.
 
 =head1 SUBROUTINES/METHODS
 
-=head2A C<changed ()>
+=head2 C<changed ()>
 
 Checks if the file has changed on disk
 
