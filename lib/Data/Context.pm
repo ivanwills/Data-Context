@@ -91,9 +91,6 @@ around BUILDARGS => sub {
 sub get {
     my ( $self, $path, $vars ) = @_;
 
-    # we allow paths to be passed with leading slash but we remove before using
-    $path =~ s{^/}{}xms;
-
     my $dci = $self->get_instance($path);
 
     return $dci->get_data($vars);
@@ -102,10 +99,13 @@ sub get {
 sub get_instance {
     my ( $self, $path ) = @_;
 
-    # TODO add some cache controlls here or in ::Instance::init();
+    # TODO add some cache controls here or in ::Instance::init();
     return $self->instance_cache->{$path} if $self->instance_cache->{$path};
 
     my @path  = split m{/+}xms, $path;
+    shift @path         if !defined $path[0] || $path[0] eq '';
+    push @path, 'index' if $path =~ m{/$}xms;
+
     my $count = 1;
     my $loader;
 

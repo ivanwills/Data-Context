@@ -47,6 +47,16 @@ sub test_getting {
     $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
     #diag Dumper $data;
     ok $data, "get some data";
+
+    # test getting root index
+    $data = eval { $dc->get( '/', { test => { value => [qw/a b/] } } ) };
+    #diag Dumper $data;
+    ok $data, "get some data";
+
+    # test getting other deep dir
+    $data = eval { $dc->get( '/non-existant/', { test => { value => [qw/a b/] } } ) };
+    #diag Dumper $data;
+    ok $data, "get some data";
 }
 
 sub test_getting_no_fallback {
