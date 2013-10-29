@@ -15,7 +15,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Moose::Util::TypeConstraints;
 use Path::Class;
-use Data::Context::Loader::File;
+use Data::Context::Util qw/do_require/;
 
 our $VERSION = version->new('0.0.5');
 
@@ -36,13 +36,25 @@ has path => (
 );
 has suffixes => (
     is      => 'rw',
-    isa     => 'HashRef[Str]',
+    isa     => 'HashRef[HashRef]',
     default => sub {
         return {
-             json => '.dc.json',
-             js   => '.dc.js',
-             yaml => '.dc.yml',
-             xml  => '.dc.xml',
+             json => {
+                 suffix => '.dc.json',
+                 module => 'Data::Context::Loader::File::JSON',
+             },
+             js => {
+                 suffix => '.dc.js',
+                 module => 'Data::Context::Loader::File::JS',
+             },
+             yaml => {
+                 suffix => '.dc.yml',
+                 module => 'Data::Context::Loader::File::YAML',
+             },
+             xml  => {
+                 suffix => '.dc.xml',
+                 module => 'Data::Context::Loader::File::XML',
+             },
         };
     },
 );
@@ -69,10 +81,12 @@ sub find {
             my $config = file(
                 $search,
                 @path[0 .. @path-2],
-                $path[-1] . $self->suffixes->{$type}
+                $path[-1] . $self->suffixes->{$type}->{suffix}
             );
             if ( -e $config ) {
-                return Data::Context::Loader::File->new(
+                my $module = $self->suffixes->{$type}->{module};
+                do_require($module);
+                return $module->new(
                     file => $config,
                     type => $type,
                 );
@@ -82,7 +96,7 @@ sub find {
             $config = file(
                 $search,
                 @path[0 .. @path - 2],
-                $self->default . $self->suffixes->{$type}
+                $self->default . $self->suffixes->{$type}->{suffix}
             );
             if ( -e $config ) {
                 $default = $config;
@@ -92,7 +106,9 @@ sub find {
     }
 
     if ($default) {
-        return Data::Context::Loader::File->new(
+        my $module = $self->suffixes->{$default_type}->{module};
+        do_require($module);
+        return $module->new(
             file => $default,
             type => $default_type,
         );

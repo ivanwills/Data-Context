@@ -1,6 +1,6 @@
-package Data::Context::Loader::File;
+package Data::Context::Loader::File::JSON;
 
-# Created on: 2013-10-27 20:02:37
+# Created on: 2013-10-29 17:34:35
 # Create by:  Ivan Wills
 # $Id$
 # $Revision$, $HeadURL$, $Date$
@@ -11,72 +11,22 @@ use version;
 use Carp;
 use Scalar::Util;
 use List::Util;
+#use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use Data::Context::Util qw/do_require/;
 
-our $VERSION = version->new('0.0.5');
 
-extends 'Data::Context::Loader';
+our $VERSION     = version->new('0.0.1');
 
-has file => (
-    is       => 'rw',
-    isa      => 'Path::Class::File',
-    required => 1,
-);
-has type => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-);
-has module => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-);
-has stats => (
-    is         => 'rw',
-    lazy_build => 1,
-    builder    => '_stats',
-    init_arg   => undef,
+extends 'Data::Context::Loader::File';
+
+has '+module' => (
+    default => 'JSON',
 );
 
-sub _stats {
-    my ($self) = @_;
-    my $stat = $self->file->stat;
-    if ( !-f $self->file ) {
-        my $msg = 'Cannot find the file "' . $self->file . '"';
-        $self->log->error($msg);
-        confess $msg;
-    }
-
-    return {
-        size     => $stat->size,
-        modified => $stat->mtime,
-    };
-}
-
-sub changed {
-    my ($self) = @_;
-
-    # check if we already have the raw data and if so that it is current
-    return -s $self->file != $self->stats->{size};
-}
-
-sub loader { confess "Not implemented!" }
-
-sub load {
-    my ($self) = @_;
-
-    do_require($self->module);
-
-    # get the raw data
-    my $raw = $self->loader(scalar $self->file->slurp);
-
-    # Reset the file stats on load.
-    $self->stats($self->_stats);
-
-    return $raw;
+sub loader {
+    my ($self, $file) = @_;
+    return JSON->new->utf8->shrink->decode($file);
 }
 
 1;
@@ -85,36 +35,45 @@ __END__
 
 =head1 NAME
 
-Data::Context::Loader::File - Loads a config file from disk
+Data::Context::Loader::File::JSON - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Loader::File version 0.0.1
+This documentation refers to Data::Context::Loader::File::JSON version 0.0.1
+
 
 =head1 SYNOPSIS
 
-   use Data::Context::Loader::File;
+   use Data::Context::Loader::File::JSON;
 
-   # Load a file of relaxed json type
-   my $file = Data::Context::Loader::File->new(
-       file => '/path/config.dc.js',
-       type => 'js',
-   );
+   # Brief but working code example(s) here showing the most common usage(s)
+   # This section will be as far as many users bother reading, so make it as
+   # educational and exemplary as possible.
+
 
 =head1 DESCRIPTION
 
-Loads files found by L<Data::Context::Finder::File> and performs checks to
-see if the file has changed on disk.
+A full description of the module and its features.
+
+May include numerous subsections (i.e., =head2, =head3, etc.).
+
 
 =head1 SUBROUTINES/METHODS
 
-=head2 C<changed ()>
+A separate section listing the public components of the module's interface.
 
-Checks if the file has changed on disk
+These normally consist of either subroutines that may be exported, or methods
+that may be called on objects belonging to the classes that the module
+provides.
 
-=head2 C<load ()>
+Name the section accordingly.
 
-Loads the file passing it with the appropriate parser.
+In an object-oriented module, this section should begin with a sentence (of the
+form "An object of this class represents ...") to give the reader a high-level
+context to help them understand the methods that are subsequently described.
+
+
+
 
 =head1 DIAGNOSTICS
 

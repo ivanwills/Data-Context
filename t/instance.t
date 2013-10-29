@@ -25,11 +25,12 @@ sub test_object {
     SKIP: {
         skip "Need JSON to run" => 1 unless $have_json;
 
+        require Data::Context::Loader::File::JS;
         $dci = Data::Context::Instance->new(
             path => 'data',
-            loader => Data::Context::Loader::File->new(
-                file => file($0)->parent->file('dc/data.dc.js'),
-                type => 'js',
+            loader => Data::Context::Loader::File::JS->new(
+                file   => file($0)->parent->file('dc/data.dc.js'),
+                type   => 'js',
             ),
             dc   => $dc,
         )->init;
@@ -43,9 +44,10 @@ sub test_object {
     SKIP: {
         skip "Need YAML::XS to run" => 1 unless $have_yaml;
 
+        require Data::Context::Loader::File::YAML;
         $dci = Data::Context::Instance->new(
             path => 'deep/child',
-            loader => Data::Context::Loader::File->new(
+            loader => Data::Context::Loader::File::YAML->new(
                 file => file($0)->parent->file('dc/deep/child.dc.yml'),
                 type => 'yaml',
             ),
@@ -60,9 +62,10 @@ sub test_object {
     SKIP: {
         skip "Need XML::Simple to run" => 1 unless $have_xml;
 
+        require Data::Context::Loader::File::XML;
         $dci = Data::Context::Instance->new(
             path => 'data',
-            loader => Data::Context::Loader::File->new(
+            loader => Data::Context::Loader::File::XML->new(
                 file => file($0)->parent->file('dc/_default.dc.xml'),
                 type => 'xml',
             ),
