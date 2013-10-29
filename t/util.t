@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 12;
+use Test::More;
 use Data::Dumper qw/Dumper/;
 
 use Data::Context::Util qw/lol_path lol_iterate/;
@@ -8,6 +8,7 @@ use Data::Context::Util qw/lol_path lol_iterate/;
 my ($data, $tests) = get_data();
 test_lol_path();
 test_lol_iterate();
+test_do_require();
 
 done_testing;
 
@@ -31,6 +32,31 @@ sub test_lol_iterate {
     for my $path ( keys %$tests ) {
         is $result{$path}, $tests->{$path}, "lol_iterate saw '$path' had a value of '".(defined $tests->{$path} ? $tests->{$path} : '')."'";
     }
+
+    # iterate over constant data
+    %result = ();
+    lol_iterate(
+        1,
+        sub {
+            my ( $data, $path ) = @_;
+            $result{$path} = $data;
+        }
+    );
+    is_deeply {''=>1}, \%result, "Iterate over constant object ok";
+
+    # itterate over null data
+    %result = ();
+    lol_iterate(
+        undef,
+        sub {
+            my ( $data, $path ) = @_;
+            $result{$path} = $data;
+        }
+    );
+    is_deeply {}, \%result, "Iterate over undefined object ok";
+}
+
+sub test_do_require {
 }
 
 sub get_data {
