@@ -112,6 +112,10 @@ see if the file has changed on disk.
 
 Checks if the file has changed on disk
 
+=head2 C<loader ($str)>
+
+Method for passing file data (should be implemented by child class.
+
 =head2 C<load ()>
 
 Loads the file passing it with the appropriate parser.
