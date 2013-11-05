@@ -58,6 +58,11 @@ has debug => (
     trigger    => \&_debug_set,
     lazy_build => 1,
 );
+has instance_class => (
+    is       => 'rw',
+    isa      => 'String',
+    default  => 'Data::Context::Instance',
+);
 has instance_cache => (
     is       => 'rw',
     isa      => 'HashRef[Data::Context::Instance]',
@@ -122,7 +127,8 @@ sub get_instance {
 
     confess "Could not find a data context config file for '$path'\n" if ! $loader;
 
-    return $self->instance_cache->{$path} = Data::Context::Instance->new(
+    my $instance_class = $self->instance_class;
+    return $self->instance_cache->{$path} = $instance_class->new(
         path   => $path,
         loader => $loader,
         dc     => $self,
