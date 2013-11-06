@@ -50,7 +50,7 @@ has actions => (
 sub init {
     my ($self) = @_;
 
-    return $self if $self->raw && !$self->loader->changed;
+    return $self if !$self->changed;
 
     my $raw = $self->loader->load();
 
@@ -69,6 +69,26 @@ sub init {
     lol_iterate( $raw, sub { $self->process_data(\$count, @_) } );
 
     return $self;
+}
+
+sub changed {
+    my ($self) = @_;
+
+    # considered changed if not data has been read
+    return 1 if !$self->raw;
+
+    # considered changed if this file has changed
+    return 1 if $self->loader->changed;
+
+    if ( $self->raw->{PARENT} ) {
+        my $parent = $self->dc->get_instance( $self->raw->{PARENT} );
+
+        # considered changed if the parent instance has changed
+        return $parent->changed;
+    }
+
+    # when all else fails the data is considered unchanged
+    return 0;
 }
 
 sub get_data {
