@@ -7,6 +7,7 @@ package Data::Context::Finder::File;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use namespace::autoclean;
 use version;
 use Carp;
 use Scalar::Util;
@@ -116,6 +117,8 @@ sub find {
 
     return;
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 

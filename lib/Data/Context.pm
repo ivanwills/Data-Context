@@ -7,6 +7,7 @@ package Data::Context;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use namespace::autoclean;
 use warnings;
 use version;
 use Carp;
@@ -148,6 +149,8 @@ sub _debug_set {
     }
     return $new_debug;
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 

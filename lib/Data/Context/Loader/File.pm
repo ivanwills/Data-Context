@@ -7,6 +7,7 @@ package Data::Context::Loader::File;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use namespace::autoclean;
 use version;
 use Carp;
 use Scalar::Util;
@@ -78,6 +79,8 @@ sub load {
 
     return $raw;
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 

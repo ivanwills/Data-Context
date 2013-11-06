@@ -7,6 +7,7 @@ package Data::Context::Finder;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use namespace::autoclean;
 use version;
 use Carp;
 use Scalar::Util;
@@ -17,6 +18,8 @@ use English qw/ -no_match_vars /;
 our $VERSION = version->new('0.0.5');
 
 
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 

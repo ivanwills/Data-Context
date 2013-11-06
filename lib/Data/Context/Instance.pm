@@ -7,6 +7,7 @@ package Data::Context::Instance;
 # $Revision$, $Source$, $Date$
 
 use Moose;
+use namespace::autoclean;
 use warnings;
 use version;
 use Carp;
@@ -162,6 +163,8 @@ sub _sort_optional {
 
     return @sorted;
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 
