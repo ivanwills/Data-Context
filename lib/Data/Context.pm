@@ -60,7 +60,7 @@ has debug => (
 );
 has instance_class => (
     is       => 'rw',
-    isa      => 'String',
+    isa      => 'Str',
     default  => 'Data::Context::Instance',
 );
 has instance_cache => (
