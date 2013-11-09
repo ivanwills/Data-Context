@@ -204,6 +204,12 @@ This documentation refers to Data::Context::Instance version 0.0.5.
 
 Initialises the instance ie it reads the config file and merges in the parent if found
 
+=head2 C<changed ()>
+
+Returns true if any of the files that go into this instance have changed (or
+if they haven't yet been processed) and retruns false if this instance is still
+valid.
+
 =head2 C<get_data ( $vars )>
 
 Returns the data from the config file processed with the context of $vars

@@ -49,6 +49,10 @@ This documentation refers to Data::Context::Loader::File::JS version 0.0.1
 
 =head1 SUBROUTINES/METHODS
 
+=head2 C<loader ($file)>
+
+Loads the file as loose JSON
+
 =head1 DIAGNOSTICS
 
 =head1 CONFIGURATION AND ENVIRONMENT
