@@ -3,6 +3,7 @@ package Data::Context::Log;
 use Moose;
 
 has level => ( is => 'rw', isa => 'Int', default => 3 );
+has fh    => ( is => 'ro', default => sub {\*STDERR}  );
 sub debug {
     my ($self, @message) = @_;
     $self->_log( 'DEBUG', @message ) if $self->level <= 1;
@@ -10,12 +11,12 @@ sub debug {
 }
 sub info  {
     my ($self, @message) = @_;
-    $self->_log( 'INFO' , @message ) if $self->level <= 2;
+    $self->_log( 'INFO ' , @message ) if $self->level <= 2;
     return;
 }
 sub warn  {   ## no critic
     my ($self, @message) = @_;
-    $self->_log( 'WARN' , @message ) if $self->level <= 3;
+    $self->_log( 'WARN ' , @message ) if $self->level <= 3;
     return;
 }
 sub error {
@@ -31,8 +32,8 @@ sub fatal {
 
 sub _log {
     my ($self, $level, @message) = @_;
-    chomp $message[-1];
-    CORE::warn( localtime() . " [$level] ", @message, "\n" );
+    chomp $message[-1] if $message[-1];
+    print {$self->fh} localtime() . " [$level] ", join ' ', @message, "\n";
     return;
 }
 
