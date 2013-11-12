@@ -125,7 +125,7 @@ sub process_data {
     my ( $self, $count, $data, $path ) = @_;
 
     if ( !ref $data ) {
-        if ( $data =~ /^\# (.*) \#$/xms ) {
+        if ( defined $data && $data =~ /^\# (.*) \#$/xms ) {
             my $data_path = $1;
             do_require( $self->dc->action_class );
             $self->actions->{$path} = {

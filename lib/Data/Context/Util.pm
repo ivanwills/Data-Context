@@ -68,6 +68,10 @@ sub lol_iterate {
     my ($lol, $code, $path) = @_;
     my $point = $lol;
 
+    if ( !$path && defined $point ) {
+        $code->( $point, $path );
+    }
+
     $path = $path ? "$path." : '';
 
     if ( $point ) {

@@ -25,7 +25,7 @@ sub test_lol_iterate {
         $data,
         sub {
             my ( $data, $path ) = @_;
-            $result{$path} = $data;
+            $result{$path} = $data if $path;
         }
     );
 
@@ -39,7 +39,7 @@ sub test_lol_iterate {
         1,
         sub {
             my ( $data, $path ) = @_;
-            $result{$path} = $data;
+            $result{$path || ''} = $data;
         }
     );
     is_deeply {''=>1}, \%result, "Iterate over constant object ok";
@@ -50,10 +50,22 @@ sub test_lol_iterate {
         undef,
         sub {
             my ( $data, $path ) = @_;
-            $result{$path} = $data;
+            $result{$path || ''} = $data;
         }
     );
-    is_deeply {}, \%result, "Iterate over undefined object ok";
+    is_deeply {}, \%result, "Iterate over undefined object without path ok";
+
+    # with a defined path
+    lol_iterate(
+        undef,
+        sub {
+            my ( $data, $path ) = @_;
+            $result{$path || ''} = $data;
+        },
+        'path'
+    );
+    is_deeply {}, \%result, "Iterate over undefined object with path ok"
+        or note Dumper \%result;
 }
 
 sub test_do_require {
