@@ -1,6 +1,8 @@
 package Data::Context::Log;
 
 use Moose;
+use Carp qw/longmess/;
+use Data::Dumper qw/Dumper/;
 
 has level => ( is => 'rw', isa => 'Int', default => 3 );
 has fh    => ( is => 'ro', default => sub {\*STDERR}  );
@@ -16,22 +18,23 @@ sub info  {
 }
 sub warn  {   ## no critic
     my ($self, @message) = @_;
-    $self->_log( 'WARN ' , @message ) if $self->level <= 3;
+    $self->_log( 'WARN ' , @message, longmess ) if $self->level <= 3;
     return;
 }
 sub error {
     my ($self, @message) = @_;
-    $self->_log( 'ERROR', @message ) if $self->level <= 4;
+    $self->_log( 'ERROR', @message, longmess ) if $self->level <= 4;
     return;
 }
 sub fatal {
     my ($self, @message) = @_;
-    $self->_log( 'FATAL', @message ) if $self->level <= 5;
+    $self->_log( 'FATAL', @message, longmess ) if $self->level <= 5;
     return;
 }
 
 sub _log {
     my ($self, $level, @message) = @_;
+    $message[0] = Dumper $message[0] if @message == 1 && ref $message[0];
     chomp $message[-1] if $message[-1];
     print {$self->fh} localtime() . " [$level] ", join ' ', @message, "\n";
     return;
