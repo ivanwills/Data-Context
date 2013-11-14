@@ -13,12 +13,14 @@ use version;
 use Carp;
 use Scalar::Util;
 use List::Util;
+use List::MoreUtils qw/pairwise/;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Hash::Merge;
 use Clone qw/clone/;
 use Data::Context::Util qw/lol_path lol_iterate do_require/;
 use Class::Inspector;
+use Moose::Util::TypeConstraints qw/duck_type/;
 
 our $VERSION = version->new('0.0.5');
 
@@ -47,6 +49,12 @@ has actions => (
     isa     => 'HashRef[HashRef]',
     default => sub {{}},
 );
+has merger => (
+    is      => 'rw',
+    isa     => duck_type( [qw/merge/] ),
+    builder => '_merger',
+    handles => [qw/merge/],
+);
 
 sub init {
     my ($self) = @_;
@@ -59,7 +67,7 @@ sub init {
     if ( $raw->{PARENT} ) {
         $self->raw({});
         my $parent = $self->dc->get_instance( $raw->{PARENT} )->init;
-        $raw = Hash::Merge->new('LEFT_PRECEDENT')->merge( $raw, $parent->raw );
+        $raw = $self->merge( $raw, $parent->raw );
     }
 
     # save complete raw data
@@ -162,6 +170,10 @@ sub _sort_optional {
     } keys %$hash;
 
     return @sorted;
+}
+
+sub _merger {
+    return Hash::Merge->new('LEFT_PRECEDENT');
 }
 
 __PACKAGE__->meta->make_immutable;
