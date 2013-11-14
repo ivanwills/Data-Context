@@ -4,36 +4,48 @@ use Moose;
 use Carp qw/longmess/;
 use Data::Dumper qw/Dumper/;
 
+my $last;
+
 has level => ( is => 'rw', isa => 'Int', default => 3 );
 has fh    => ( is => 'ro', default => sub {\*STDERR}  );
+sub BUILD {
+    my ($self) = @_;
+    $last = $self;
+};
 sub debug {
     my ($self, @message) = @_;
+    $self = $last if !ref $self;
     $self->_log( 'DEBUG', @message ) if $self->level <= 1;
     return;
 }
 sub info  {
     my ($self, @message) = @_;
+    $self = $last if !ref $self;
     $self->_log( 'INFO ' , @message ) if $self->level <= 2;
     return;
 }
 sub warn  {   ## no critic
     my ($self, @message) = @_;
+    $self = $last if !ref $self;
     $self->_log( 'WARN ' , @message, longmess ) if $self->level <= 3;
     return;
 }
 sub error {
     my ($self, @message) = @_;
+    $self = $last if !ref $self;
     $self->_log( 'ERROR', @message, longmess ) if $self->level <= 4;
     return;
 }
 sub fatal {
     my ($self, @message) = @_;
+    $self = $last if !ref $self;
     $self->_log( 'FATAL', @message, longmess ) if $self->level <= 5;
     return;
 }
 
 sub _log {
     my ($self, $level, @message) = @_;
+    $self = $last if !ref $self;
     $message[0] = Dumper $message[0] if @message == 1 && ref $message[0];
     chomp $message[-1] if $message[-1];
     print {$self->fh} localtime() . " [$level] ", join ' ', @message, "\n";
