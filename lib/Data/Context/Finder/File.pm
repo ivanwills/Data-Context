@@ -18,7 +18,7 @@ use Moose::Util::TypeConstraints;
 use Path::Class;
 use Data::Context::Util qw/do_require/;
 
-our $VERSION = version->new('0.0.5');
+our $VERSION = version->new('0.1.0');
 
 extends 'Data::Context::Finder';
 
