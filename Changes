@@ -1,6 +1,11 @@
 Revision history for Data-Context
 
 0.1.0   2014-01-01
+        Fixed spelling (Ivan Wills)
+        Fix critic issue (Ivan Wills)
+        Updated manifests (Ivan Wills)
+        Added missing method documentation (Ivan Wills)
+        Updating for release of version 0.1.0 (Ivan Wills)
         Adding tag files (Ivan Wills)
         Changed to storing the merger object so that it can be changed by caller/child class (Ivan Wills)
         Made log store the last created version so it can be called with the class name (Ivan Wills)
