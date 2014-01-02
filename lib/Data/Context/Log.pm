@@ -76,7 +76,7 @@ This documentation refers to Data::Context::Log version 0.0.1
 
 =head1 DESCRIPTION
 
-Very simple log object it only realy exists as a place holder for more
+Very simple log object it only really exists as a place holder for more
 sophisticated log objects (eg L<Log::Log4perl>).
 
 =head1 SUBROUTINES/METHODS
@@ -89,7 +89,7 @@ level to 5 will show only fatal error messages.
 
 =head2 BUILD
 
-Construction activitivities
+Construction activities
 
 =over 4
 

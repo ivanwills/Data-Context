@@ -219,7 +219,7 @@ Initialises the instance ie it reads the config file and merges in the parent if
 =head2 C<changed ()>
 
 Returns true if any of the files that go into this instance have changed (or
-if they haven't yet been processed) and retruns false if this instance is still
+if they haven't yet been processed) and returns false if this instance is still
 valid.
 
 =head2 C<get_data ( $vars )>
