@@ -11,6 +11,7 @@ has fh    => ( is => 'ro', default => sub {\*STDERR}  );
 sub BUILD {
     my ($self) = @_;
     $last = $self;
+    return;
 };
 sub debug {
     my ($self, @message) = @_;
