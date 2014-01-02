@@ -1,6 +1,8 @@
 Revision history for Data-Context
 
 0.1.0   2014-01-01
+        Added missing dependencies (Ivan Wills)
+        Added missing lib tests (Ivan Wills)
         Fixed spelling (Ivan Wills)
         Fix critic issue (Ivan Wills)
         Updated manifests (Ivan Wills)
