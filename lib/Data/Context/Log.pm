@@ -86,6 +86,10 @@ Has one optional parameter C<level> (default is 3) which sets the cut off
 level for showing log messages. Setting level to 1 shows all messages, setting
 level to 5 will show only fatal error messages.
 
+=head2 BUILD
+
+Construction activitivities
+
 =over 4
 
 =item debug
