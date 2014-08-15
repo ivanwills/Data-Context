@@ -1,8 +1,11 @@
 package Data::Context::Log;
 
 use Moose;
+use version;
 use Carp qw/longmess/;
 use Data::Dumper qw/Dumper/;
+
+our $VERSION = version->new('0.1.1');
 
 my $last;
 
