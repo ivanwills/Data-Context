@@ -54,8 +54,10 @@ sub test_getting {
 
     # test getting other deep dir
     $data = eval { $dc->get( '/non-existant/', { test => { value => [qw/a b/] } } ) };
+    my $error = $@;
     #diag Dumper $data;
-    ok $data, "get some data";
+    ok $data, "get some data"
+        or diag Dumper $data;
 }
 
 sub test_getting_no_fallback {
