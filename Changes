@@ -1,5 +1,8 @@
 Revision history for Data-Context
 
+0.1.1   2014-08-15
+        Adding more test info to diagnose CPAN Testers reports (Ivan Wills)
+
 0.1.0   2014-01-01
         Added missing dependencies (Ivan Wills)
         Added missing lib tests (Ivan Wills)
