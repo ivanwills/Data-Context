@@ -32,6 +32,7 @@ my $builder = Module::Build->new(
     },
     recommends => {
         'JSON'               => 0,
+        'JSON::XS'           => 0,
         'YAML::XS'           => 0,
         'XML::Simple'        => 0,
         'Test::Spelling'     => 0,
