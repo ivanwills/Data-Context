@@ -1,5 +1,13 @@
 Revision history for Data-Context
 
+0.1.4   2014-08-19
+        Added recommends for JSON::XS (Ivan Wills)
+        Added extra logic to skip test if XML::Simple isn't installed (Ivan Wills)
+        Trying to get better test diagnostics (Ivan Wills)
+        Updated for next release (Ivan Wills)
+        Added more details to test to try to diagnose CPAN Testers issues (Ivan Wills)
+        
+
 0.1.3   2014-08-19
         Added more details to test to try to diagnose CPAN Testers issues (Ivan Wills)
         Fixed travis-ci config (Ivan Wills)
