@@ -35,7 +35,7 @@ sub test_getting {
     );
     my $data = $dc->get( 'data', { test => { value => [qw/a b/] } } );
 
-    ok $data, "get some data";
+    ok $data, "get some data from ( 'data', { test => { value => [qw/a b/] } } )";
     is $data->{hash}{straight_var}, 'b', "Variable set to 'b'";
 
     $data = $dc->get( 'data', { test => { value => [qw/a new_val/] } } );
@@ -45,19 +45,21 @@ sub test_getting {
 
     $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
     #diag Dumper $data;
-    ok $data, "get some data";
+    ok $data, "get some data from ( 'data/with/deep/path', { test => { value => [qw/a b/] } } )"
+        or diag $@;
 
     # test getting root index
     $data = eval { $dc->get( '/', { test => { value => [qw/a b/] } } ) };
     #diag Dumper $data;
-    ok $data, "get some data";
+    ok $data, "get some data from ( '/', { test => { value => [qw/a b/] } } )"
+        or diag $@;
 
     # test getting other deep dir
     $data = eval { $dc->get( '/non-existant/', { test => { value => [qw/a b/] } } ) };
     my $error = $@;
     #diag Dumper $data;
-    ok $data, "get some data"
-        or diag Dumper $data;
+    ok $data, "get some data from ( '/non-existant/', { test => { value => [qw/a b/] } } )"
+        or diag Dumper $@, $data;
 }
 
 sub test_getting_no_fallback {
