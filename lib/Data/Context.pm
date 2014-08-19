@@ -20,7 +20,7 @@ use Path::Class;
 use Data::Context::Instance;
 use Data::Context::Finder::File;
 
-our $VERSION = version->new('0.1.2');
+our $VERSION = version->new('0.1.3');
 
 has fallback => (
     is      => 'rw',
@@ -162,7 +162,7 @@ Data::Context - Configuration data with context
 
 =head1 VERSION
 
-This documentation refers to Data::Context version 0.1.2.
+This documentation refers to Data::Context version 0.1.3.
 
 =head1 SYNOPSIS
 

@@ -15,7 +15,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 
 
-our $VERSION = version->new('0.1.2');
+our $VERSION = version->new('0.1.3');
 
 
 

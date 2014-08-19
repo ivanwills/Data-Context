@@ -5,7 +5,7 @@ use version;
 use Carp qw/longmess/;
 use Data::Dumper qw/Dumper/;
 
-our $VERSION = version->new('0.1.2');
+our $VERSION = version->new('0.1.3');
 
 my $last;
 
