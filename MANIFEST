@@ -6,7 +6,7 @@ MANIFEST.SKIP
 META.json
 META.yml
 Makefile.PL
-README
+README.pod
 eg/data.pl
 eg/dc/_default.dc.js
 eg/dc/index.dc.js
