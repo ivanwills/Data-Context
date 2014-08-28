@@ -89,10 +89,10 @@ tags
 
 # Other files of interest
 \..*\.tag$
+errors.err
+.travis.yml
 vim.sh
 vrc.yml
 tmp*
 temp*
-errors.err
-
 TODO
