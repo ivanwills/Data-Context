@@ -3,8 +3,8 @@
 use strict;
 use warnings;
 use Carp qw/carp croak cluck confess longmess/;
-use Test::More tests => 3 + 1;
-use Test::NoWarnings;
+use Test::More;
+use Test::Warnings;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -48,3 +48,17 @@ not_in_file_ok(Changes =>
 );
 
 module_boilerplate_ok('lib/Data/Context.pm');
+module_boilerplate_ok('lib/Data/Context/Actions.pm');
+module_boilerplate_ok('lib/Data/Context/Finder.pm');
+module_boilerplate_ok('lib/Data/Context/Finder/File.pm');
+module_boilerplate_ok('lib/Data/Context/Instance.pm');
+module_boilerplate_ok('lib/Data/Context/Loader.pm');
+module_boilerplate_ok('lib/Data/Context/Loader/File.pm');
+module_boilerplate_ok('lib/Data/Context/Loader/File/JS.pm');
+module_boilerplate_ok('lib/Data/Context/Loader/File/JSON.pm');
+module_boilerplate_ok('lib/Data/Context/Loader/File/XML.pm');
+module_boilerplate_ok('lib/Data/Context/Loader/File/YAML.pm');
+module_boilerplate_ok('lib/Data/Context/Log.pm');
+module_boilerplate_ok('lib/Data/Context/Manual.pod');
+module_boilerplate_ok('lib/Data/Context/Util.pm');
+done_testing();
