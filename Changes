@@ -1,12 +1,24 @@
 Revision history for Data-Context
 
+0.1.5   2015-01-11
+        Updating for release of version 0.1.5
+        Updated dependencies (Ivan Wills)
+        Updated License (Ivan Wills)
+        Added missing tests (Ivan Wills)
+        Updated manifest (Ivan Wills)
+        Lots of new tests (Ivan Wills)
+        Changed to test README.pod (Ivan Wills)
+        Changed README to POD syntax (Ivan Wills)
+        Updated (Ivan Wills)
+        New test data (Ivan Wills)
+
 0.1.4   2014-08-19
         Added recommends for JSON::XS (Ivan Wills)
         Added extra logic to skip test if XML::Simple isn't installed (Ivan Wills)
         Trying to get better test diagnostics (Ivan Wills)
         Updated for next release (Ivan Wills)
         Added more details to test to try to diagnose CPAN Testers issues (Ivan Wills)
-        
+
 
 0.1.3   2014-08-19
         Added more details to test to try to diagnose CPAN Testers issues (Ivan Wills)
