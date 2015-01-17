@@ -2,7 +2,6 @@ use strict;
 use warnings;
 use Test::More;
 use Path::Class;
-use Data::Dumper qw/Dumper/;
 use AnyEvent;
 use AnyEvent::HTTP;
 use Test::Warn;
@@ -14,10 +13,13 @@ plan skip_all => 'This test requires JSON, XML::Simple to be installed to run' i
 
 my $path = file($0)->parent->subdir('dc-yaml');
 
-test_creation();
-test_getting();
-test_getting_no_fallback();
+eval {
+    test_creation();
+    test_getting();
+    test_getting_no_fallback();
+};
 
+ok !$@, 'No errors' or diag explain $@;
 done_testing;
 
 sub test_creation {
@@ -48,23 +50,20 @@ sub test_getting {
     }
     $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
     my $error = $@;
-    #diag Dumper $data;
     ok $data, "get some data from ( 'data/with/deep/path', { test => { value => [qw/a b/] } } )"
-        or diag $error;
+        or diag $error, $data;
 
     # test getting root index
     $data = eval { $dc->get( '/', { test => { value => [qw/a b/] } } ) };
     $error = $@;
-    #diag Dumper $data;
     ok $data, "get some data from ( '/', { test => { value => [qw/a b/] } } )"
-        or diag $error;
+        or diag $error, $data;
 
     # test getting other deep dir
     $data = eval { $dc->get( '/non-existant/', { test => { value => [qw/a b/] } } ) };
     $error = $@;
-    #diag Dumper $data;
     ok $data, "get some data from ( '/non-existant/', { test => { value => [qw/a b/] } } )"
-        or diag Dumper $error, $data;
+        or diag explain $error, $data;
 }
 
 sub test_getting_no_fallback {
@@ -74,17 +73,16 @@ sub test_getting_no_fallback {
     );
 
     my $data = eval { $dc->get( 'data/with/deep/path', { test => { value => [qw/a b/] } } ) };
-    #diag Dumper $data;
-    ok !$data, "get no data";
+    ok !$data, "get no data"
+        or diag explain $data;
 
     $data = eval { $dc->get( 'defaultable', { test => { value => [qw/a b/] } } ) };
     my $e = $@;
-    #diag Dumper $data;
     SKIP: {
         eval { require XML::Simple };
         skip "XML::Simple not installed", 1 if $@;
         ok $data, "get default data"
-            or diag "Error $e";
+            or diag explain $e, $data;
     }
 }
 
