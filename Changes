@@ -1,5 +1,10 @@
 Revision history for Data-Context
 
+0.1.6   2015-01-18
+        Updating for release of version 0.1.6
+        Applied same changes to other tests (Ivan Wills)
+        Cleaned up error reporting (Ivan Wills)
+
 0.1.5   2015-01-11
         Updating for release of version 0.1.5
         Updated dependencies (Ivan Wills)
