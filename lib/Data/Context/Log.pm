@@ -66,7 +66,7 @@ Data::Context::Log - Simple Log object helper
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Log version 0.0.1
+This documentation refers to Data::Context::Log version 0.1.6
 
 =head1 SYNOPSIS
 

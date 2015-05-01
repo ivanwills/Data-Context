@@ -31,7 +31,7 @@ Data::Context::Finder - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Finder version 0.0.1
+This documentation refers to Data::Context::Finder version 0.1.6
 
 
 =head1 SYNOPSIS

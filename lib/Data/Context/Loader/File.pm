@@ -92,7 +92,7 @@ Data::Context::Loader::File - Loads a config file from disk
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Loader::File version 0.0.1
+This documentation refers to Data::Context::Loader::File version 0.1.6
 
 =head1 SYNOPSIS
 
