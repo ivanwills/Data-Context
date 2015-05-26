@@ -12,7 +12,7 @@ use Carp;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 
-our $VERSION     = version->new('0.1.6');
+our $VERSION     = version->new('0.1.7');
 
 extends 'Data::Context::Loader::File';
 
@@ -35,7 +35,7 @@ Data::Context::Loader::File::YAML - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Loader::File::YAML version 0.1.6
+This documentation refers to Data::Context::Loader::File::YAML version 0.1.7
 
 =head1 SYNOPSIS
 

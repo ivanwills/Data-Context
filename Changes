@@ -1,5 +1,13 @@
 Revision history for Data-Context
 
+0.1.7   2015-05-26
+        Updating for release of version 0.1.7
+        Some refactoring to try to get better coverage (Ivan Wills)
+        Improving code coverage of log function (Ivan Wills)
+        Fixed the version number in the modules (Ivan Wills)
+        Set Test::More minimum version (Ivan Wills)
+        Removed unneeded tag (Ivan Wills)
+
 0.1.6   2015-01-18
         Updating for release of version 0.1.6
         Applied same changes to other tests (Ivan Wills)
