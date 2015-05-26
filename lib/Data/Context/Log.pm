@@ -50,8 +50,8 @@ sub fatal {
 sub _log {
     my ($self, $level, @message) = @_;
     $self = $last if !ref $self;
-    $message[0] = Dumper $message[0] if @message == 1 && ref $message[0];
-    chomp $message[-1] if $message[-1];
+    $message[0] = Dumper $message[0] if @message == 1 && ( ref $message[0] || !defined $message[0] );
+    chomp $message[-1];
     print {$self->fh} localtime() . " [$level] ", join ' ', @message, "\n";
     return;
 }
