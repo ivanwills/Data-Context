@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 use Data::Dumper qw/Dumper/;
 
-use Data::Context::Util qw/lol_path lol_iterate/;
+use Data::Context::Util qw/lol_path lol_iterate do_require/;
 
 my ($data, $tests) = get_data();
 test_lol_path();
@@ -69,6 +69,8 @@ sub test_lol_iterate {
 }
 
 sub test_do_require {
+    eval { do_require('123::B456'); };
+    ok $@, 'Get error loading bad module';
 }
 
 sub get_data {

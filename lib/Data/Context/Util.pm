@@ -14,6 +14,7 @@ use Scalar::Util qw/blessed/;
 use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
+use Class::Inspector;
 use base qw/Exporter/;
 
 our $VERSION   = version->new('0.1.7');
