@@ -94,6 +94,10 @@ sub test_log {
     is $dc->debug, 2, 'debug level is now 2';
 
     is ref $dc->log, 'Data::Context::Log', 'Get log object';
+
+    $dc->log($dc);
+    $dc->debug(1);
+    is $dc->debug, 1, 'debug level is now 1';
 }
 
 sub get_data {
