@@ -17,6 +17,7 @@ my $path = file($0)->parent->subdir('dc');
 test_creation();
 test_getting();
 test_getting_no_fallback();
+test_log();
 
 done_testing;
 
@@ -25,7 +26,7 @@ sub test_creation {
     isa_ok $dc, 'Data::Context', 'get a new object correctly';
 
     eval { Data::Context->new };
-    ok $@, "Requires path";
+    like $@, qr/\bpath\b.*is\s+required/, "Requires path";
 }
 
 sub test_getting {
@@ -84,6 +85,15 @@ sub test_getting_no_fallback {
         ok $data, "get default data"
             or diag "Error $e";
     }
+}
+
+sub test_log {
+    my $dc = Data::Context->new( path => "$path" );
+    is $dc->debug, 3, 'default debug level is 3';
+    $dc->debug(2);
+    is $dc->debug, 2, 'debug level is now 2';
+
+    is ref $dc->log, 'Data::Context::Log', 'Get log object';
 }
 
 sub get_data {
