@@ -1,5 +1,11 @@
 Revision history for Data-Context
 
+0.1.8   2015-05-29
+        Updating for release of version 0.1.8
+        Added tests for do_require (Ivan Wills)
+        Added further coverage (Ivan Wills)
+        Added tests for default log object (Ivan Wills)
+
 0.1.7   2015-05-26
         Updating for release of version 0.1.7
         Some refactoring to try to get better coverage (Ivan Wills)

@@ -17,7 +17,7 @@ use English qw/ -no_match_vars /;
 use Class::Inspector;
 use base qw/Exporter/;
 
-our $VERSION   = version->new('0.1.7');
+our $VERSION   = version->new('0.1.8');
 our @EXPORT_OK = qw/lol_path lol_iterate do_require/;
 
 sub lol_path {
@@ -134,7 +134,7 @@ Data::Context::Util - Helper functions for Data::Context
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Util version 0.1.7.
+This documentation refers to Data::Context::Util version 0.1.8.
 
 =head1 SYNOPSIS
 
