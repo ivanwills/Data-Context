@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Path::Class;
+use Path::Tiny;
 use Data::Dumper qw/Dumper/;
 use IO::String;
 

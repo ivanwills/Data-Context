@@ -15,7 +15,7 @@ use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Moose::Util::TypeConstraints;
-use Path::Class;
+use Path::Tiny;
 use Data::Context::Util qw/do_require/;
 
 our $VERSION = version->new('0.1.8');
@@ -79,7 +79,7 @@ sub find {
 
     for my $search ( @{ $self->path } ) {
         for my $type ( @{ $self->suffix_order } ) {
-            my $config = file(
+            my $config = path(
                 $search,
                 @path[0 .. @path-2],
                 $path[-1] . $self->suffixes->{$type}->{suffix}
@@ -94,7 +94,7 @@ sub find {
             }
             next if $default;
 
-            $config = file(
+            $config = path(
                 $search,
                 @path[0 .. @path - 2],
                 $self->default . $self->suffixes->{$type}->{suffix}

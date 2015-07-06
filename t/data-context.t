@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Path::Class;
+use Path::Tiny;
 use Data::Dumper qw/Dumper/;
 use AnyEvent;
 use AnyEvent::HTTP;
@@ -12,7 +12,7 @@ use Data::Context;
 eval { require JSON; require XML::Simple; require YAML::XS; };
 plan skip_all => 'This test requires JSON, XML::Simple and YAML::XS to be installed to run' if $@;
 
-my $path = file($0)->parent->subdir('dc');
+my $path = path($0)->parent->child('dc');
 
 test_creation();
 test_getting();

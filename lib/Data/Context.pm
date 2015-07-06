@@ -15,7 +15,7 @@ use Scalar::Util;
 use List::Util;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use Path::Class;
+use Path::Tiny;
 
 use Data::Context::Instance;
 use Data::Context::Finder::File;

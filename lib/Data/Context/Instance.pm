@@ -197,7 +197,7 @@ This documentation refers to Data::Context::Instance version 0.1.8.
    # create a new object
    my $dci = Data::Context::Instance->new(
         path => 'dir/file',
-        file => Path::Class::file('path/to/dir/file.dc.js'),
+        file => Path::Tiny::path('path/to/dir/file.dc.js'),
         type => 'js',
         dc   => $dc,
    );

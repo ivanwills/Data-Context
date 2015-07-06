@@ -12,12 +12,12 @@ use version;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use FindBin qw/$Bin/;
-use Path::Class;
+use Path::Tiny;
 use AnyEvent;
 use AnyEvent::HTTP;
 use Data::Context;
 
-my $path = file($0)->parent->subdir('dc');
+my $path = path($0)->parent->child('dc');
 my $dc   = Data::Context->new( path => "$path" );
 
 # process the template index.dc.js with context data

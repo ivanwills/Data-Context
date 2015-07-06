@@ -18,7 +18,7 @@ my $builder = Module::Build->new(
         'Moose'                        => 0,
         'Moose::Util::TypeConstraints' => 0,
         'namespace::autoclean'         => 0,
-        'Path::Class'                  => 0,
+        'Path::Tiny'                   => 0,
         'Scalar::Util'                 => 0,
         'version'                      => 0,
     },

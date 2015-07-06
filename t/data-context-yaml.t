@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Path::Class;
+use Path::Tiny;
 use AnyEvent;
 use AnyEvent::HTTP;
 use Test::Warn;
@@ -11,7 +11,7 @@ use Data::Context;
 eval { require YAML::XS; };
 plan skip_all => 'This test requires JSON, XML::Simple to be installed to run' if $@;
 
-my $path = file($0)->parent->subdir('dc-yaml');
+my $path = path($0)->parent->child('dc-yaml');
 
 eval {
     test_creation();

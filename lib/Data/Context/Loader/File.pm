@@ -22,7 +22,7 @@ extends 'Data::Context::Loader';
 
 has file => (
     is       => 'rw',
-    isa      => 'Path::Class::File',
+    isa      => 'Path::Tiny',
     required => 1,
 );
 has type => (
