@@ -13,7 +13,7 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 
 
-our $VERSION     = version->new('0.1.8');
+our $VERSION     = version->new('0.1.9');
 
 extends 'Data::Context::Loader::File';
 
@@ -36,7 +36,7 @@ Data::Context::Loader::File::XML - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Loader::File::XML version 0.1.8
+This documentation refers to Data::Context::Loader::File::XML version 0.1.9
 
 =head1 SYNOPSIS
 

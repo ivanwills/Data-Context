@@ -1,5 +1,10 @@
 Revision history for Data-Context
 
+0.1.9   2015-07-14
+        Updating for release of version 0.1.9
+        Converted to Path::Tiny (Ivan Wills)
+        Added Perl 5.22 to list of perl versions to build with (Ivan Wills)
+
 0.1.8   2015-05-29
         Updating for release of version 0.1.8
         Added tests for do_require (Ivan Wills)
