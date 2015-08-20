@@ -5,7 +5,7 @@ use version;
 use Carp qw/longmess/;
 use Data::Dumper qw/Dumper/;
 
-our $VERSION = version->new('0.1.9');
+our $VERSION = version->new('0.1.10');
 
 my $last;
 
@@ -66,7 +66,7 @@ Data::Context::Log - Simple Log object helper
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Log version 0.1.9
+This documentation refers to Data::Context::Log version 0.1.10
 
 =head1 SYNOPSIS
 

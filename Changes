@@ -1,5 +1,9 @@
 Revision history for Data-Context
 
+0.1.10   2015-08-20
+        Updating for release of version 0.1.10
+        Removed creation of makefile (Ivan Wills)
+
 0.1.9   2015-07-14
         Updating for release of version 0.1.9
         Converted to Path::Tiny (Ivan Wills)
