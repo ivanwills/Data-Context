@@ -18,7 +18,6 @@ lib/Data/Context/Log.pm
 lib/Data/Context/Manual.pod
 lib/Data/Context/Util.pm
 LICENSE
-Makefile.PL
 MANIFEST
 META.json
 META.yml
