@@ -17,7 +17,15 @@ use English qw/ -no_match_vars /;
 
 our $VERSION = version->new('0.1.10');
 
+has raw => (
+    is  => 'rw',
+);
 
+sub load {
+    my ($self) = @_;
+
+    return $self->raw;
+}
 
 __PACKAGE__->meta->make_immutable;
 
