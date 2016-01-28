@@ -111,7 +111,7 @@ object are made available this way.
 If only C<MODULE> is specified then the C<action_method> (by default get_data)
 is used to call against C<MODULE>.
 
-If both C<MODULE> and C<METHOD> are specified then C<MODULE>->C<METHID> is
+If both C<MODULE> and C<METHOD> are specified then C<MODULE>->C<METHOD> is
 used.
 
 The contents of the hash containing C<MODULE> and/or C<METHOD> are passed to
