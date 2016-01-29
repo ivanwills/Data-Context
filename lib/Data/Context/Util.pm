@@ -26,6 +26,21 @@ sub lol_path {
     my $point = $lol;
     my $replacer;
 
+    if ( ! @path ) {
+        my $replacer = sub { confess "Can't replace '$path'!\n" };
+        if ( ref $lol eq 'HASH' ) {
+            $replacer = sub {
+                %$lol = %{ $_[0] };
+            };
+        }
+        elsif ( ref $lol eq 'ARRAY' ) {
+            $replacer = sub {
+                @$lol = @{ $_[0] };
+            };
+        }
+        return wantarray ? ( $lol, $replacer ) : $lol;
+    }
+
     POINT:
     while ( $point && @path ) {
 
@@ -70,7 +85,7 @@ sub lol_iterate {
     my $point = $lol;
 
     if ( !$path && defined $point ) {
-        $code->( $point, $path );
+        $code->( $point, '' );
     }
 
     $path = $path ? "$path." : '';
