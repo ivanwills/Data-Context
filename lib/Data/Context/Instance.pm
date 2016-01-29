@@ -75,7 +75,13 @@ sub init {
 
     # get data actions
     my $count = 0;
-    lol_iterate( $raw, sub { $self->process_data(\$count, @_) } );
+    lol_iterate(
+        $raw,
+        sub {
+            my ($data, $path) = @_;
+            $self->process_data(\$count, $data, $path);
+        }
+    );
 
     return $self;
 }
@@ -131,6 +137,7 @@ sub get_data {
 
 sub process_data {
     my ( $self, $count, $data, $path ) = @_;
+    confess "No path supplied!" if ! defined $path;
 
     if ( !ref $data ) {
         if ( defined $data && $data =~ /^\# (.*) \#$/xms ) {
@@ -151,6 +158,9 @@ sub process_data {
             order  => $data->{ORDER},
             found  => $$count++,
         };
+        if ( ! defined $self->actions->{$path}{method} ) {
+            confess "Can't find method for '$path'!\n" . Dumper $data;
+        }
         do_require( $self->actions->{$path}{module} );
     }
 
