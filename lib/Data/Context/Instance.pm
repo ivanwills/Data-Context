@@ -39,6 +39,7 @@ has dc => (
     isa      => 'Data::Context',
     required => 1,
     weak_ref => 1,
+    handles => [qw/log/],
 );
 has raw => (
     is  => 'rw',
