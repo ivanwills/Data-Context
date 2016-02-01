@@ -26,6 +26,7 @@ t/00-load.t
 t/actions.t
 t/boilerplate.t
 t/critic.t
+t/data-context-action.t
 t/data-context-json.t
 t/data-context-xml.t
 t/data-context-yaml.t
@@ -44,10 +45,12 @@ t/dc-yaml/deep/child.dc.yml
 t/dc-yaml/index.dc.yml
 t/dc/_default.dc.xml
 t/dc/data.dc.js
+t/dc/deep/action.dc.js
 t/dc/deep/child.dc.yml
 t/dc/index.dc.json
 t/instance.t
 t/kwalitee.t
+t/lib/MyApp/MyAction.pm
 t/log.t
 t/perlcriticrc
 t/pod-coverage.t
