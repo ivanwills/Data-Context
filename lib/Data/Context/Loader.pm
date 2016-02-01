@@ -53,27 +53,23 @@ This documentation refers to Data::Context::Loader version 0.1.10
 
 =head1 DESCRIPTION
 
-A full description of the module and its features.
-
-May include numerous subsections (i.e., =head2, =head3, etc.).
-
+Parent class for specific data loaders. See L<Data::Context::Loader::File> for
+an example/default data loader.
 
 =head1 SUBROUTINES/METHODS
 
-A separate section listing the public components of the module's interface.
+=head2 C<changed ()>
 
-These normally consist of either subroutines that may be exported, or methods
-that may be called on objects belonging to the classes that the module
-provides.
+Implemented by child classes, checkes if the configuration has changed.
 
-Name the section accordingly.
+=head2 C<loader ($str)>
 
-In an object-oriented module, this section should begin with a sentence (of the
-form "An object of this class represents ...") to give the reader a high-level
-context to help them understand the methods that are subsequently described.
+Implemented by child classes, does the actual loading of Data::Context
+configurations.
 
+=head2 C<load ()>
 
-
+Default load just return the raw value from C<loader()>.
 
 =head1 DIAGNOSTICS
 
