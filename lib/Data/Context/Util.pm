@@ -45,7 +45,7 @@ sub lol_path {
     while ( $point && @path ) {
 
         # ignore empty path parts
-        if ( ! defined $path[0] || $path[0] eq '' ) {
+        if ( $path[0] eq '' ) {
             shift @path;
             next POINT;
         }
