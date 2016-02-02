@@ -119,13 +119,19 @@ sub get_data {
         my ($value, $replacer) = lol_path( $data, $path );
         my $module = $self->actions->{$path}{module};
         my $method = $self->actions->{$path}{method};
-        my $new = $module->$method( $value, $vars, $path, $self );
 
-        if ( blessed($new) && $new->isa('AnyEvent::CondVar') ) {
-            push @events, [ $replacer, $new ];
+        if ( $module->can($method) ) {
+            my $new = $module->$method( $value, $vars, $path, $self );
+
+            if ( blessed($new) && $new->isa('AnyEvent::CondVar') ) {
+                push @events, [ $replacer, $new ];
+            }
+            else {
+                $replacer->($new);
+            }
         }
         else {
-            $replacer->($new);
+            $self->log->error("Can't call $method on $module from config " . $self->path . '!');
         }
     }
 
