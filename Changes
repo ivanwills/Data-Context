@@ -1,5 +1,22 @@
 Revision history for Data-Context
 
+0.2   2016-02-07
+        Updating for release of version 0.2
+        Updated date (Ivan Wills)
+        Fixed up documentation for D::C::Loader (Ivan Wills)
+        Cleaned up (Ivan Wills)
+        Added checking that the method can be called (Ivan Wills)
+        Added checking for path to be defined (Ivan Wills)
+        Added more tests to improve code coverage (Ivan Wills)
+        Putting real documentation in (Ivan Wills)
+        Added missing files (Ivan Wills)
+        Added handles to log is easy to access (Ivan Wills)
+        Added ability to replace whole data block if nessesary (Ivan Wills)
+        Added protection from bad data (Ivan Wills)
+        More tests of actions (Ivan Wills)
+        Fixed typo (Ivan Wills)
+        Adding default load method (Ivan Wills)
+
 0.1.10   2015-08-20
         Updating for release of version 0.1.10
         Removed creation of makefile (Ivan Wills)
