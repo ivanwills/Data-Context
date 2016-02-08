@@ -323,7 +323,7 @@ when found.
 
 If you want to use your own default class for actions (ie you don't want
 to specify C<actions> and don't want to have to always specify MODULE).
-Your class should inherit from L<Data::Context::Action> to be safe.
+Your class should inherit from L<Data::Context::Actions> to be safe.
 
 =item action_method
 
