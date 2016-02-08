@@ -46,6 +46,7 @@ Data::Context::Actions - Contains all the default actions available to a config
 =head1 VERSION
 
 This documentation refers to Data::Context::Actions version 0.2.
+
 =head1 SYNOPSIS
 
    use Data::Context::Actions;
