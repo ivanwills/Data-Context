@@ -1,0 +1,21 @@
+--- 
+count: 6
+default: 
+  restart: 0
+  wait: 0
+editor: 
+  files: 
+    eg: 
+      - some-file.eg
+name: data-context
+terminals: 
+  2: []
+
+  3: []
+
+  4: []
+
+  5: []
+
+  6: []
+
