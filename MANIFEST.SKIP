@@ -45,9 +45,9 @@
 \.rej$
 
 # Avoid OS-specific files/dirs
-# Mac OSX metadata
+#   Mac OSX metadata
 \B\.DS_Store
-# Mac OSX SMB mount metadata files
+#   Mac OSX SMB mount metadata files
 \B\._
 
 # Avoid Devel::Cover and Devel::CoverX::Covered files.
@@ -87,12 +87,19 @@ tags
 # Avoid prove saved state file
 .prove
 
+# Debian package files (not for CPAN)
+debian/
+
 # Other files of interest
-\..*\.tag$
-errors.err
+[.].*[.]tag$
+.editorconfig
+.vtide.yml
 .travis.yml
-vim.sh
+.current-env
 vrc.yml
+vim.sh
+cmds
+errors.err
 tmp*
 temp*
 TODO
