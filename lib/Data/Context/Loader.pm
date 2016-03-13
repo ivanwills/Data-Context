@@ -60,7 +60,7 @@ an example/default data loader.
 
 =head2 C<changed ()>
 
-Implemented by child classes, checkes if the configuration has changed.
+Implemented by child classes, checks if the configuration has changed.
 
 =head2 C<loader ($str)>
 
