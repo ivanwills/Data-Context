@@ -1,21 +1,46 @@
---- 
-count: 6
-default: 
+---
+count: 8
+default:
   restart: 0
-  wait: 0
-editor: 
-  files: 
-    eg: 
-      - some-file.eg
+  wait: 1
+editor:
+  files:
+    base:
+      -lib/Data/Context.pm
+      -lib/Data/Context/Log.pm
+      -lib/Data/Context/Util.pm
+    finder:
+      -lib/Data/Context/Finder.pm
+      -lib/Data/Context/Finder/File.pm
+    loader:
+      -lib/Data/Context/Loader.pm
+      -lib/Data/Context/Loader/File.pm
+    loader-file:
+      -lib/Data/Context/Loader/File/JS.pm
+      -lib/Data/Context/Loader/File/JSON.pm
+      -lib/Data/Context/Loader/File/XML.pm
+      -lib/Data/Context/Loader/File/YAML.pm
+    other:
+      -lib/Data/Context/Actions.pm
+      -lib/Data/Context/Instance.pm
+      -lib/Data/Context/Manual.pod
 name: data-context
-terminals: 
-  2: []
-
-  3: []
-
-  4: []
-
-  5: []
-
-  6: []
-
+terminals:
+  1a:
+    command: ./Build && ./Build testcover
+    restart: 1
+    wait: 0
+    watch:
+      - lib
+      - bin
+      - tests
+  2:
+    edit: base
+  3:
+    edit: finder
+  4:
+    edit: loader
+  5:
+    edit: loader-file
+  6:
+    edit: other
