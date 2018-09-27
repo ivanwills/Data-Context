@@ -245,8 +245,8 @@ Data::Context Configuration
     action_class
               Allows the using of an action class other than Data::Context::Actions. Although it is suggested that the alt class should inherit from Data::Context::Actions
     file_suffixes HASHREF
-             json => '.dc.json' : JSON
-             js   => '.dc.js'   : JSON->relaxed
+             json => '.dc.json' : JSON::XS
+             js   => '.dc.js'   : JSON::XS->relaxed
              yaml => '.dc.yml'  : YAML or YAML::XS
              xml  => '.dc.xml'  : XML::Simple
     log      logging object, creates own object that just writes to STDERR if not specified

@@ -33,7 +33,6 @@ my $builder = Module::Build->new(
         'AnyEvent::HTTP' => 0,
     },
     recommends => {
-        'JSON'               => 0,
         'JSON::XS'           => 0,
         'YAML::XS'           => 0,
         'XML::Simple'        => 0,

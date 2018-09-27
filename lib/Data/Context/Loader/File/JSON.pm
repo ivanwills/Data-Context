@@ -9,24 +9,20 @@ package Data::Context::Loader::File::JSON;
 use Moose;
 use version;
 use Carp;
-use Scalar::Util;
-use List::Util;
-#use List::MoreUtils;
-use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-
+use JSON::XS;
 
 our $VERSION     = version->new('0.2.2');
 
 extends 'Data::Context::Loader::File';
 
 has '+module' => (
-    default => 'JSON',
+    default => 'JSON::XS',
 );
 
 sub loader {
     my ($self, $file) = @_;
-    return JSON->new->utf8->shrink->decode($file);
+    return JSON::XS->new->utf8->shrink->decode($file);
 }
 
 1;
