@@ -12,7 +12,7 @@ use Carp;
 use English qw/ -no_match_vars /;
 use JSON::XS;
 
-our $VERSION     = version->new('0.2.2');
+our $VERSION     = version->new('0.2.3');
 
 extends 'Data::Context::Loader::File';
 
@@ -35,7 +35,7 @@ Data::Context::Loader::File::JS - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to Data::Context::Loader::File::JS version 0.2.2
+This documentation refers to Data::Context::Loader::File::JS version 0.2.3
 
 =head1 SYNOPSIS
 

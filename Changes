@@ -1,5 +1,12 @@
 Revision history for Data-Context
 
+0.2.3   2018-09-30
+        Updating for release of version 0.2.3
+        Moving everything to JSON::XS (Ivan Wills)
+        Update date (Ivan Wills)
+        Updated perl version (Ivan Wills)
+        Updating Test dependencies for better windows experience (Ivan Wills)
+
 0.2.2   2017-04-17
         Updating for release of version 0.2.2
         Updated date (Ivan Wills)
