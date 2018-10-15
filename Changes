@@ -1,5 +1,9 @@
 Revision history for Data-Context
 
+0.3   2018-10-15
+        Updating for release of version 0.3
+        Added prodection against missing optional dependencies (Ivan Wills)
+
 0.2.3   2018-09-30
         Updating for release of version 0.2.3
         Moving everything to JSON::XS (Ivan Wills)
